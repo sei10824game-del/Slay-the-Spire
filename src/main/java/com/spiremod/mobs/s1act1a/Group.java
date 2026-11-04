@@ -16,5 +16,9 @@ public final class Group {
         out.accept(Slime.SpikeS.def());
         out.accept(Slime.SpikeM.def());
         out.accept(Slime.SpikeL.def());
+        out.accept(FungiBeast.def());
+        out.accept(Slaver.def());
+        out.accept(Slaver.Red.def());
+        out.accept(Looter.def());
     }
 }
