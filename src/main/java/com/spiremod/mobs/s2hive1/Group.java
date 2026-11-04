@@ -7,5 +7,9 @@ import java.util.function.Consumer;
 public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
+        out.accept(Bowlbug.def(0));
+        out.accept(Bowlbug.def(1));
+        out.accept(Bowlbug.def(2));
+        out.accept(Bowlbug.def(3));
     }
 }

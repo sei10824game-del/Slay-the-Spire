@@ -7,5 +7,9 @@ import java.util.function.Consumer;
 public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
+        out.accept(FatGremlin.def());
+        out.accept(MadGremlin.def());
+        out.accept(ShieldGremlin.def());
+        out.accept(SneakyGremlin.def());
     }
 }

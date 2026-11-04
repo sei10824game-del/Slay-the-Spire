@@ -7,5 +7,8 @@ import java.util.function.Consumer;
 public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
+        out.accept(Darkling.def());
+        out.accept(OrbWalker.def());
+        out.accept(Spiker.def());
     }
 }

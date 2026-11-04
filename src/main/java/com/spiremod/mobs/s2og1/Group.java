@@ -7,5 +7,8 @@ import java.util.function.Consumer;
 public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
+        out.accept(LeafSlime.defS());
+        out.accept(LeafSlime.defM());
+        out.accept(Nibbit.def());
     }
 }
