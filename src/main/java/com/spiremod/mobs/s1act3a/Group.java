@@ -10,5 +10,14 @@ public final class Group {
         out.accept(Darkling.def());
         out.accept(OrbWalker.def());
         out.accept(Spiker.def());
+        out.accept(Repulsor.def());
+        out.accept(Exploder.def());
+        out.accept(WrithingMass.def());
+        out.accept(Transient.def());
+        out.accept(GiantHead.def());
+        out.accept(Nemesis.def());
+        out.accept(Reptomancer.def());
+        out.accept(Dagger.def());
+        out.accept(Maw.def());
     }
 }
