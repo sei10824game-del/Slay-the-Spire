@@ -11,5 +11,12 @@ public final class Group {
         out.accept(MadGremlin.def());
         out.accept(ShieldGremlin.def());
         out.accept(SneakyGremlin.def());
+        out.accept(GremlinNob.def());
+        out.accept(Lagavulin.def());
+        out.accept(Sentry.def());
+        out.accept(GremlinWizard.def());
+        out.accept(SlimeBoss.def());
+        out.accept(TheGuardian.def());
+        out.accept(Hexaghost.def());
     }
 }
