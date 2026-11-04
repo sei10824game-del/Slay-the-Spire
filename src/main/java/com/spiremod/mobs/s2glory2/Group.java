@@ -7,5 +7,10 @@ import java.util.function.Consumer;
 public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
+        out.accept(Queen.def());
+        out.accept(TorchHeadAmalgam.def());
+        out.accept(TestSubject.def());
+        out.accept(Aeonglass.def());
+        out.accept(Doormaker.def());
     }
 }

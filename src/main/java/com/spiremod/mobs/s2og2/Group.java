@@ -8,5 +8,11 @@ public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
         out.accept(PhrogParasite.def());
+        out.accept(BygoneEffigy.def());
+        out.accept(Byrdonis.def());
+        out.accept(Vantom.def());
+        out.accept(KinPriest.def());
+        out.accept(KinFollower.def());
+        out.accept(CeremonialBeast.def());
     }
 }

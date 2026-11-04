@@ -9,5 +9,12 @@ public final class Group {
     public static void collect(Consumer<MobDef> out) {
         out.accept(SpireGrowth.def());
         out.accept(SpireShield.def());
+        out.accept(AwakenedOne.def());
+        out.accept(AwakenedCultist.def());
+        out.accept(TimeEater.def());
+        out.accept(Donu.def());
+        out.accept(Deca.def());
+        out.accept(SpireSpear.def());
+        out.accept(CorruptHeart.def());
     }
 }
