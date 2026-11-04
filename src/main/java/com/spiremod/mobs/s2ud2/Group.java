@@ -8,5 +8,10 @@ public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
         out.accept(TerrorEel.def());
+        out.accept(PhantasmalGardener.def());
+        out.accept(SkulkingColony.def());
+        out.accept(WaterfallGiant.def());
+        out.accept(LagavulinMatriarch.def());
+        out.accept(SoulFysh.def());
     }
 }
