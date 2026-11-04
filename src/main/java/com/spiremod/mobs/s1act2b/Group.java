@@ -9,5 +9,11 @@ public final class Group {
     public static void collect(Consumer<MobDef> out) {
         out.accept(BronzeAutomaton.def());
         out.accept(Champ.def());
+        out.accept(BookOfStabbing.def());
+        out.accept(GremlinLeader.def());
+        out.accept(Taskmaster.def());
+        out.accept(BronzeOrb.def());
+        out.accept(Collector.def());
+        out.accept(TorchHead.def());
     }
 }

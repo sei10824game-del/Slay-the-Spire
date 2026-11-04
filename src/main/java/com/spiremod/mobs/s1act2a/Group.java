@@ -10,5 +10,14 @@ public final class Group {
         out.accept(Byrd.def());
         out.accept(Snecko.def());
         out.accept(SphericGuardian.def());
+        out.accept(ShelledParasite.def());
+        out.accept(Chosen.def());
+        out.accept(Centurion.def());
+        out.accept(Mystic.def());
+        out.accept(SnakePlant.def());
+        out.accept(Mugger.def());
+        out.accept(BanditBear.def());
+        out.accept(Pointy.def());
+        out.accept(Romeo.def());
     }
 }
