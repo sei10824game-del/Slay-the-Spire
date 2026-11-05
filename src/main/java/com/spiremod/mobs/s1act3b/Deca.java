@@ -78,7 +78,6 @@ public final class Deca {
             .model(Deca::model).boss()
             .onSpawn(s -> {
                 s.setCount("artifact", 2);
-                if (!s.flags.contains("paired")) { s.flags.add("paired"); SpireMob d = Fx.summon(s, "donu", -5, 0); if (d != null) d.flags.add("paired"); }
             })
             .onTick(S3::artifact)
             .pattern(Pattern.cycle("beam", "square_of_protection"))

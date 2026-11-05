@@ -77,6 +77,8 @@ public class SpireMob extends Monster {
             this.setNoGravity(true);
         }
         if (def.fireImmune) this.setPathfindingMalus(net.minecraft.world.level.pathfinder.BlockPathTypes.LAVA, 0f);
+        this.navigation = createNavigation(level);   // super ctor built it before def was set
+        initGoals();
     }
 
     public static AttributeSupplier.Builder attrs(MobDef d) {
@@ -100,7 +102,9 @@ public class SpireMob extends Monster {
         entityData.define(D_INTENT_COLOR, 0xFFFFFF); entityData.define(D_BLOCK, 0); entityData.define(D_STRENGTH, 0);
     }
 
-    @Override protected void registerGoals() {
+    @Override protected void registerGoals() { /* def is still null here (called from Mob.<init>); see initGoals() */ }
+
+    private void initGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new SpireMoveGoal(this));
         if (def.flying) goalSelector.addGoal(6, new WaterAvoidingRandomFlyingGoal(this, 0.8));

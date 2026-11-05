@@ -77,7 +77,7 @@ public final class Donu {
             .model(Donu::model).boss()
             .onSpawn(s -> {
                 s.setCount("artifact", 2);
-                if (!s.flags.contains("paired")) { s.flags.add("paired"); SpireMob d = Fx.summon(s, "deca", 5, 0); if (d != null) d.flags.add("paired"); }
+                if (!s.flags.contains("paired") && Fx.countAlive(s, "deca", 12) == 0) { s.flags.add("paired"); SpireMob d = Fx.summon(s, "deca", 5, 0); if (d != null) d.flags.add("paired"); }
             })
             .onTick(S3::artifact)
             .pattern(Pattern.cycle("circle_of_power", "beam"))
