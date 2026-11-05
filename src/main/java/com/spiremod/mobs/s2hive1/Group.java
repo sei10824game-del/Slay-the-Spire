@@ -7,6 +7,12 @@ import java.util.function.Consumer;
 public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
+        out.accept(BattlewornDummy1.def());
+        out.accept(BattlewornDummy2.def());
+        out.accept(BattlewornDummy3.def());
+        out.accept(HunterKiller.def());
+        out.accept(Merchant.def());
+        out.accept(SlumberingBeetle.def());
         out.accept(Bowlbug.def(0));
         out.accept(Bowlbug.def(1));
         out.accept(Bowlbug.def(2));

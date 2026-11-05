@@ -1,6 +1,7 @@
 package com.spiremod.mobs.s2og1;
 
 import com.spiremod.core.*;
+import com.spiremod.spec.*;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,4 +31,13 @@ final class Kit {
     static void tangled(LivingEntity v, int turns) { effect(v, MobEffects.DIG_SLOWDOWN, turns * TURN * 2, 1); effect(v, MobEffects.MOVEMENT_SLOWDOWN, turns * TURN, 0); }
     /** StS2 Infection status card (3 damage while held): short poison */
     static void infection(LivingEntity v) { effect(v, MobEffects.POISON, 4, 0); }
+
+    // ---- compact animation keys: groups of (tick, a, b, c). tick<0 => snap (IN_CUBIC at -tick); tick>=1000 => OUT_BACK at tick-1000.
+    private static Ease ease(float t) { return t < 0 ? Ease.IN_CUBIC : t >= 1000 ? Ease.OUT_BACK : Ease.SMOOTH; }
+    private static float tk(float t) { return t < 0 ? -t : t >= 1000 ? t - 1000 : t; }
+    static Clip R(Clip c, String p, float... v) { for (int i = 0; i + 3 < v.length; i += 4) c.rot(p, tk(v[i]), v[i + 1], v[i + 2], v[i + 3], ease(v[i])); return c; }
+    static Clip P(Clip c, String p, float... v) { for (int i = 0; i + 3 < v.length; i += 4) c.pos(p, tk(v[i]), v[i + 1], v[i + 2], v[i + 3], ease(v[i])); return c; }
+    static Clip S(Clip c, String p, float... v) { for (int i = 0; i + 3 < v.length; i += 4) c.scl(p, tk(v[i]), v[i + 1], v[i + 2], v[i + 3], ease(v[i])); return c; }
+    /** standard 10-tick flinch of one part */
+    static void hurt(ModelSpec m, String part, float rx, float rz) { R(m.clip("hurt", 10), part, 0, 0, 0, 0, 3, rx, 0, rz, 10, 0, 0, 0); }
 }
