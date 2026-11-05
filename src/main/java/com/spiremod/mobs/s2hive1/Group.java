@@ -7,6 +7,18 @@ import java.util.function.Consumer;
 public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
+        out.accept(HiveB.Exoskeleton.def());
+        out.accept(HiveB.ThievingHopper.def());
+        out.accept(HiveB.Tunneler.def());
+        out.accept(HiveB.Chomper.def());
+        out.accept(HiveB.LouseProgenitor.def());
+        out.accept(HiveB.Myte.def());
+        out.accept(HiveB.Ovicopter.def());
+        out.accept(HiveB.ToughEgg.def());
+        out.accept(HiveB.Hatchling.def());
+        out.accept(HiveB.SpinyToad.def());
+        out.accept(HiveB.Obscura.def());
+        out.accept(HiveB.Parafright.def());
         out.accept(BattlewornDummy1.def());
         out.accept(BattlewornDummy2.def());
         out.accept(BattlewornDummy3.def());
