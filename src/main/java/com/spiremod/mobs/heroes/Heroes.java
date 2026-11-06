@@ -127,7 +127,7 @@ public final class Heroes {
             .move(Move.of("bash", 30).anim("strike").intent(Intent.ATTACK_DEBUFF, 8, 1).reach(2.8f)
                 .sound(12, SoundEvents.ANVIL_LAND, 0.6f, 1.2f).at(12, Fx.melee(8, 2.8, 100, v -> Fx.vulnerable(v, 6))));
         burningBlood(d);
-        return d;
+        return CardMoves.finish(d, game, game == 1 ? "Red" : "Ironclad");
     }
 
     // ================================================================ SILENT (70 HP) Ring of the Snake: draws extra -> acts faster
@@ -143,12 +143,12 @@ public final class Heroes {
         });
     }
     static MobDef silentDef(String id, String en, int game, int cloak, boolean s2) {
-        return base(id, en, "サイレント", game, 70, 0.32f, Style.SILENT, cloak, 0x1a1a1a, () -> silent(id, cloak, 0x20402a))
+        return CardMoves.finish(base(id, en, "サイレント", game, 70, 0.32f, Style.SILENT, cloak, 0x1a1a1a, () -> silent(id, cloak, 0x20402a))
             .pattern(deck(5, 5, "neutralize", "survivor"))
             .move(strike(6)).move(defend(5))
             .move(Move.of("neutralize", 20).anim("thrust").intent(Intent.ATTACK_DEBUFF, 3, 1).reach(2.6f)
                 .sound(8, SoundEvents.PLAYER_ATTACK_SWEEP, 1f, 1.6f).at(8, Fx.melee(3, 2.8, 100, v -> Fx.weak(v, 6))))
-            .move(Move.of("survivor", 24).anim("defend").intent(Intent.DEFEND).noTarget().at(8, Fx.block(8)));
+            .move(Move.of("survivor", 24).anim("defend").intent(Intent.DEFEND).noTarget().at(8, Fx.block(8))), game, game == 1 ? "Green" : "Silent");
     }
 
     // ================================================================ DEFECT (75 HP) Cracked Core: starts with a Lightning orb
@@ -172,7 +172,7 @@ public final class Heroes {
         return m;
     }
     static MobDef defectDef(String id, String en, int game, int body, int glow) {
-        return base(id, en, "ディフェクト", game, 75, 0.26f, Style.METAL, body, glow, () -> defectModel(id, body, glow))
+        return CardMoves.finish(base(id, en, "ディフェクト", game, 75, 0.26f, Style.METAL, body, glow, () -> defectModel(id, body, glow))
             .pattern(deck(4, 4, "zap", "dualcast"))
             .move(strike(6)).move(defend(5))
             .move(Move.of("zap", 24).anim("skill").intent(Intent.BUFF).noTarget()
@@ -185,7 +185,7 @@ public final class Heroes {
             .onTick(s -> {   // passive: Lightning orbs zap the nearest foe every 2 s
                 if (s.tickCount % 40 != 0 || s.count("orbs") == 0 || s.getTarget() == null) return;
                 if (s.distanceTo(s.getTarget()) < 8) for (int i = 0; i < s.count("orbs"); i++) Fx.dmg(s, s.getTarget(), 3);
-            });
+            }), game, game == 1 ? "Blue" : "Defect");
     }
 
     // ================================================================ WATCHER (72 HP, StS1 only) Pure Water: Miracle; stances
@@ -199,7 +199,7 @@ public final class Heroes {
         });
     }
     static MobDef watcherDef() {
-        return base("watcher", "Watcher", "ウォッチャー", 1, 72, 0.26f, Style.WITCH, 0x7a3a9a, 0xe8d070, () -> watcher("watcher"))
+        return CardMoves.finish(base("watcher", "Watcher", "ウォッチャー", 1, 72, 0.26f, Style.WITCH, 0x7a3a9a, 0xe8d070, () -> watcher("watcher"))
             .pattern(deck(4, 4, "eruption", "vigilance"))
             .move(Move.of("strike", 26).intent(Intent.ATTACK, 6, 1).reach(2.6f)
                 .sound(8, SoundEvents.PLAYER_ATTACK_SWEEP, 1f, 1f).at(12, (s, t) -> Fx.meleeNow(s, s.flags.contains("wrath") ? 12 : 6, 2.8, 100, null)))
@@ -208,7 +208,7 @@ public final class Heroes {
                 .sound(12, SoundEvents.BLAZE_SHOOT, 1f, 0.7f)
                 .at(12, (s, t) -> { Fx.meleeNow(s, s.flags.contains("wrath") ? 18 : 9, 2.8, 100, null); s.flags.add("wrath"); Fx.particles(s, ParticleTypes.ANGRY_VILLAGER, 10, 0.5); }))
             .move(Move.of("vigilance", 24).anim("defend").intent(Intent.DEFEND).noTarget()
-                .at(8, (s, t) -> { s.addBlock(8); s.flags.remove("wrath"); Fx.particles(s, ParticleTypes.END_ROD, 12, 0.5); }));
+                .at(8, (s, t) -> { s.addBlock(8); s.flags.remove("wrath"); Fx.particles(s, ParticleTypes.END_ROD, 12, 0.5); })), 1, "Purple");
     }
 
     // ================================================================ REGENT (75 HP, StS2) Divine Right: starts with 3 Stars
@@ -222,8 +222,7 @@ public final class Heroes {
         });
     }
     static MobDef regentDef() {
-        ModelSpec[] cache = new ModelSpec[1];
-        return base("s2_regent", "The Regent", "リージェント", 2, 75, 0.26f, Style.MAGIC, 0xd8b030, 0x4a2a8a, () -> {
+        return CardMoves.finish(base("s2_regent", "The Regent", "リージェント", 2, 75, 0.26f, Style.MAGIC, 0xd8b030, 0x4a2a8a, () -> {
                 ModelSpec m = regent("s2_regent");
                 m.proc((rig, ctx) -> { for (int i = 0; i < 3; i++) { double a = -ctx.age * 0.12 + i * Math.PI * 2 / 3; rig.pos("star" + i, (float) Math.cos(a) * 8, 2f, (float) Math.sin(a) * 8); rig.show("star" + i, i < Math.max(1, ctx.var)); } });
                 return m;
@@ -231,12 +230,12 @@ public final class Heroes {
             .pattern(deck(4, 4, "falling_star", "venerate"))
             .onSpawn(s -> { s.setCount("stars", 3); s.setVar(3); })
             .move(strike(6)).move(defend(5))
-            .move(Move.of("falling_star", 26).anim("skill").intent(Intent.ATTACK_DEBUFF, 7, 1).ranged(10)
+            .move(Move.of("falling_star", 26).anim("skill").intent(Intent.ATTACK_DEBUFF, 8, 1).ranged(10)
                 .sound(14, SoundEvents.AMETHYST_BLOCK_CHIME, 1f, 0.6f)
                 .at(14, (s, t) -> { if (t == null) return; Fx.particlesAt(s, ParticleTypes.END_ROD, t.position().add(0, 3, 0), 12, 0.3, 0.2);
-                    Fx.dmg(s, t, 7 + s.count("stars")); Fx.weak(t, 4); Fx.vulnerable(t, 4); }))
+                    Fx.dmg(s, t, 8 + s.count("stars") / 2); Fx.weak(t, 4); Fx.vulnerable(t, 4); }))
             .move(Move.of("venerate", 24).anim("skill").intent(Intent.BUFF).noTarget()
-                .at(10, (s, t) -> { s.setCount("stars", Math.min(5, s.count("stars") + 2)); s.setVar(Math.min(3, s.count("stars"))); Fx.particles(s, ParticleTypes.END_ROD, 14, 0.6); }));
+                .at(10, (s, t) -> { s.setCount("stars", Math.min(5, s.count("stars") + 2)); s.setVar(Math.min(3, s.count("stars"))); Fx.particles(s, ParticleTypes.END_ROD, 14, 0.6); })), 2, "Regent");
     }
 
     // ================================================================ NECROBINDER (66 HP, StS2) Bound Phylactery: summons Osty
@@ -251,7 +250,7 @@ public final class Heroes {
         });
     }
     static MobDef necroDef() {
-        return base("s2_necrobinder", "The Necrobinder", "ネクロバインダー", 2, 66, 0.26f, Style.WITCH, 0x3a3a52, 0x9a6ad0, () -> necro("s2_necrobinder"))
+        return CardMoves.finish(base("s2_necrobinder", "The Necrobinder", "ネクロバインダー", 2, 66, 0.26f, Style.WITCH, 0x3a3a52, 0x9a6ad0, () -> necro("s2_necrobinder"))
             .pattern(deck(4, 4, "bodyguard", "unleash"))
             .onSpawn(s -> Fx.summon(s, "s2_osty", 1.2, 0.5))
             .move(strike(6)).move(defend(5))
@@ -259,7 +258,7 @@ public final class Heroes {
                 .at(10, (s, t) -> { if (Fx.countAlive(s, "s2_osty", 16) == 0) Fx.summon(s, "s2_osty", 1.2, 0.5); else s.addBlock(7); }))
             .move(Move.of("unleash", 24).anim("thrust").intent(Intent.ATTACK, 6, 1).ranged(8)
                 .at(9, (s, t) -> { Fx.hitTarget(6).run(s, t); Fx.particles(s, ParticleTypes.SOUL, 10, 0.5);
-                    for (SpireMob o : s.level().getEntitiesOfClass(SpireMob.class, s.getBoundingBox().inflate(16))) if (o.def.id.equals("s2_osty") && t != null) { o.setTarget(t); Fx.dmg(o, t, 6); } }));
+                    for (SpireMob o : s.level().getEntitiesOfClass(SpireMob.class, s.getBoundingBox().inflate(16))) if (o.def.id.equals("s2_osty") && t != null) { o.setTarget(t); Fx.dmg(o, t, 6); } })), 2, "Necrobinder");
     }
 
     public static ModelSpec ostyModel() {

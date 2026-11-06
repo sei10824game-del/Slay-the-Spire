@@ -22,3 +22,7 @@ Known approximations: no card/Strength/Dex/Artifact effects in engine; mapped to
 
 ## Parallel work recipe
 One session/agent per package using the prompt: "Read docs/CREATURE_GUIDE.md + mobs/example/Cultist.java; finish package <pkg> assignment above; only edit that package; never run gradle/git; preview PNGs and iterate; register in Group.java."
+
+## Hero card pool (wiki-synced)
+Hero moves = hand-written signature cards (Heroes.java) + every parsable wiki card of their colour (CardMoves.java, ~35-55 moves each).
+After a game update that changes cards: `python3 tools/gen_cards.py` (pulls the wiki Cargo `Cards` table -> heroes/CardData.java), then rebuild. Only damage/block/Weak/Vulnerable/Poison/Strength/Dexterity/Focus/Thorns/Metallicize/heal text is interpreted; other effects (draw, exhaust, orbs...) are ignored.
