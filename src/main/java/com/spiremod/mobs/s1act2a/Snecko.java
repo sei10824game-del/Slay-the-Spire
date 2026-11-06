@@ -15,7 +15,7 @@ import net.minecraft.world.effect.MobEffects;
 public final class Snecko {
     private Snecko() {}
 
-    static final int SKIN = 0x3e8f74, SKIN_D = 0x24584a, BELLY = 0xdcc47a, BELLY_D = 0xa8904a, EYE = 0xffd23a, SPOT = 0x2c6b8a;
+    static final int SKIN = 0x78d84e, SKIN_D = 0x4a9a30, BELLY = 0xf0cf94, BELLY_D = 0xc09a5c, EYE = 0xe8d8a8, SPOT = 0x5ab838;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("snecko");
@@ -33,12 +33,12 @@ public final class Snecko {
         t3.box(-0.5f, -0.5f, -7, 1, 1, 2).color(0x1a3a30);
         // torso rising from the coil
         Part body = m.add("body").at(0, 4, 0);
-        body.box(-5, 0, -4, 10, 10, 8).color(SKIN).grad(0x4aa384, SKIN_D).noise(0.12f).bevel(0.15f)
+        body.box(-5, 0, -4, 10, 10, 8).color(SKIN).grad(0x98ec68, SKIN_D).noise(0.12f).bevel(0.15f)
             .paint(Face.LEFT, 2, 3, 2, 2, SPOT).paint(Face.RIGHT, 4, 5, 2, 2, SPOT);
         body.box(-3.5f, 0.5f, 3.4f, 7, 9, 1).color(BELLY).grad(BELLY, BELLY_D)
             .band(2, 1, BELLY_D).band(5, 1, BELLY_D).band(8, 1, BELLY_D);
         Part chest = body.add("chest").at(0, 10, 0);
-        chest.box(-4, 0, -3.5f, 8, 7, 7).color(SKIN).grad(0x52ac8c, SKIN).bevel(0.15f);
+        chest.box(-4, 0, -3.5f, 8, 7, 7).color(SKIN).grad(0x98ec68, SKIN).bevel(0.15f);
         chest.box(-3, 0, 3, 6, 7, 1).color(BELLY).grad(BELLY, BELLY_D).band(3, 1, BELLY_D);
         for (int s = -1; s <= 1; s += 2) {
             Part arm = chest.add(s < 0 ? "armR" : "armL").at(s * 4.5f, 5, 1).rot(-30, 0, s * -10);
@@ -48,12 +48,12 @@ public final class Snecko {
             claw.box(-1.5f, -3, 1, 1, 2, 1).color(0xe8e0c0).flat();
             claw.box(0.5f, -3, 1, 1, 2, 1).color(0xe8e0c0).flat();
         }
-        Part neck = chest.add("neck").at(0, 7, 0);
-        neck.box(-2.5f, 0, -2.5f, 5, 4, 5).color(SKIN).grad(SKIN, SKIN_D);
-        neck.box(-2, 0, 2.2f, 4, 4, 1).color(BELLY);
+        Part neck = chest.add("neck").at(0, 7, 0).rot(30, 0, 0);
+        neck.box(-2.5f, 0, -2.5f, 5, 8, 5).color(SKIN).grad(SKIN, SKIN_D).bevel(0.3f);
+        neck.box(-2, 0, 2.2f, 4, 8, 1).color(BELLY).grad(BELLY, BELLY_D).band(3, 1, BELLY_D).band(7, 1, BELLY_D);
         // huge head
-        Part head = neck.add("head").at(0, 3, 1);
-        head.box(-6, 0, -5, 12, 10, 11).color(SKIN).grad(0x5ab894, SKIN_D).noise(0.12f).bevel(0.2f)
+        Part head = neck.add("head").at(0, 7, 1).rot(-35, 0, 0);
+        head.box(-5, 0, -4.5f, 10, 9, 10).color(SKIN).grad(0xa8f078, SKIN_D).noise(0.12f).bevel(0.2f)
             .paint(Face.TOP, 2, 2, 3, 2, SPOT).paint(Face.TOP, 7, 6, 2, 2, SPOT).paint(Face.LEFT, 2, 2, 2, 2, SPOT);
         head.box(-4, 9.5f, -3, 8, 2, 7).color(SKIN_D).bevel(0.2f);               // brow ridge
         Part eye = head.add("eye").at(0, 6, 5.5f);

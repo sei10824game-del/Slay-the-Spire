@@ -15,4 +15,5 @@ StS2: Aeonglass, Assassin Raider, Chomper, Corpse Slug, Cubex Construct, Calcifi
 Lagavulin, Hexaghost, Jaw Worm, Slime Boss, Sentry, Corrupt Heart, Donu, Deca (all StS1).
 Palette-only fixes (silhouette still differs, needs geometry rework): Gremlin Nob, Time Eater, The Collector, Bronze Automaton, The Guardian, Awakened One.
 Shape reworked away from humanoid: Awakened One (raven), Transient (spindly orb), The Guardian (plate-shard arms, thin legs), Time Eater (hunched robe + pocket watch), The Collector (hollow hood).
+Snecko recoloured lime with an arched neck.
 Remaining list above = still to do; method: render with tools/preview.sh, compare to wiki image, iterate.
