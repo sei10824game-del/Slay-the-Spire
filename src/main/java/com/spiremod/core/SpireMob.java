@@ -180,7 +180,22 @@ public class SpireMob extends Monster {
         return r;
     }
 
+    /** flying mobs have no gravity: ignore upward knockback and keep them within a few blocks of the ground so a hit can't launch them into the sky */
+    @Override public void knockback(double strength, double x, double z) {
+        super.knockback(strength, x, z);
+        if (def != null && def.flying) { var v = getDeltaMovement(); setDeltaMovement(v.x, Math.min(v.y, 0.0), v.z); }
+    }
+
+    private void limitHover() {
+        int gy = level().getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, blockPosition().getX(), blockPosition().getZ());
+        double top = gy + 1.5 + Math.max(2.0, getBbHeight());                 // max hover height above the highest block below
+        var v = getDeltaMovement();
+        if (getY() > top) { setDeltaMovement(v.x, -0.2, v.z); if (getY() > top + 3) setPos(getX(), top, getZ()); }
+        else if (v.y > 0.12) setDeltaMovement(v.x, 0.12, v.z);
+    }
+
     @Override public void tick() {
+        if (!level().isClientSide && def != null && def.flying) limitHover();
         super.tick();
         spawnAge++;
         if (level().isClientSide) {
