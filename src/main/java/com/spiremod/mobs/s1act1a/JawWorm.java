@@ -12,66 +12,58 @@ import net.minecraft.sounds.SoundEvents;
 public final class JawWorm {
     private JawWorm() {}
 
-    static final int SHELL = 0x55704a, SHELL_D = 0x34462f, SHELL_L = 0x7d9663, BELLY = 0xcdb683, BELLY_D = 0x9c8458,
-        TOOTH = 0xeee6c8, GUM = 0x8a3a3a, MOUTH = 0x3a1414, EYE = 0xffd23c;
+    static final int SHELL = 0x3aa8b4, SHELL_D = 0x1f6f80, SHELL_L = 0x6cd0d6, BELLY = 0xa6dcd8, BELLY_D = 0x5c9aa0, SPOT = 0x1c5a6a,
+        TOOTH = 0xf4f0e0, GUM = 0xb02a3a, MOUTH = 0x5a0f1c, EYE = 0xffd23c;
 
-    static void plate(Box b) { b.grad(SHELL_L, SHELL_D).bevel(0.25f).noise(0.08f); }
+    static Box plate(Box b) { return b.grad(SHELL_L, SHELL_D).bevel(0.25f).noise(0.08f); }
 
     public static ModelSpec model() {
-        ModelSpec m = new ModelSpec("jaw_worm");
-        // ---- tail curling behind on the ground
-        Part body = m.add("body").at(0, 0, 0);
-        Part tail = body.add("tail").at(0, 0, -3);
-        plate(tail.box(-3.5f, 0, -6, 7, 5, 6));
-        tail.box(-3, 0, -6, 6, 1, 6).color(BELLY_D);
-        Part tail2 = tail.add("tail2").at(0, 0, -6);
-        plate(tail2.box(-2.5f, 0, -5, 5, 4, 5));
+        // StS1 Jaw Worm: a teal fish-lizard with a huge toothy mouth, back spines and fins, dragging itself on stubby limbs
+        ModelSpec m = new ModelSpec("jaw_worm").scale(0.8f);
+        Part body = m.add("body").at(0, 6, 0);
+        plate(body.box(-6, -5, -6, 12, 12, 12)).paint(Face.TOP, 2, 3, 2, 2, SPOT).paint(Face.TOP, 6, 9, 2, 2, SPOT).paint(Face.RIGHT, 4, 3, 2, 2, SPOT);
+        body.box(-5, -5.5f, -5, 10, 1, 10).color(BELLY).grad(BELLY, BELLY_D);                             // pale belly
+        for (int i = 0; i < 5; i++) body.box(-0.5f, 7, -5 + i * 2.5f, 1, 3 + (i == 2 ? 3 : i % 2), 2).color(SHELL_L).bevel(0.15f);   // back spines
+        for (int s = -1; s <= 1; s += 2) {                                                                  // side fins
+            Part fin = body.add(s < 0 ? "hornR" : "hornL").at(s * 5, 1, 1).rot(0, 0, s * -20);
+            fin.box(s < 0 ? -5 : 0, -1, -2, 5, 1, 5).color(SHELL_L).grad(SHELL_L, SHELL).bevel(0.15f);
+        }
+        // ---- neck/head chain pointing forward so the whole front can rear and lunge
+        Part seg2 = body.add("seg2").at(0, 0, 6);
+        plate(seg2.box(-5.5f, -4.5f, 0, 11, 10, 4));
+        seg2.box(-3.5f, -4, 0.5f, 7, 1, 4).color(BELLY).grad(BELLY, BELLY_D);
+        Part seg3 = seg2.add("seg3").at(0, 0, 4);
+        plate(seg3.box(-5, -4, 0, 10, 9, 3));
+        Part head = seg3.add("head").at(0, 0, 3);
+        plate(head.box(-6, -4, 0, 12, 10, 8)).paint(Face.TOP, 1, 1, 2, 2, SPOT).paint(Face.TOP, 5, 3, 2, 2, SPOT);
+        head.box(-5.6f, 3, 5.4f, 2, 2, 2).color(EYE).flat().glow(Face.FRONT, 0, 0, 2, 1, EYE);
+        head.box(3.6f, 3, 5.4f, 2, 2, 2).color(EYE).flat().glow(Face.FRONT, 0, 0, 2, 1, EYE);
+        for (int i = 0; i < 3; i++) head.box(-0.5f, 3.5f, 0.5f + i * 2, 1, 2 + (i == 0 ? 1 : 0), 1).color(SHELL_L);   // crest spines
+        // upper jaw (snout) with teeth hanging down
+        Part jawU = head.add("jawU").at(0, 0.5f, 7.5f);
+        jawU.box(-4.5f, -0.5f, 0, 9, 2.5f > 2 ? 3 : 2, 7).color(SHELL).grad(SHELL_L, SHELL_D).bevel(0.2f);
+        jawU.box(-4, -1.2f, 0.5f, 8, 1, 6).color(GUM);
+        for (int i = 0; i < 8; i++) jawU.box(-4 + i, -2, 6 - (i % 2), 1, 1, 1).color(TOOTH).flat();
+        // huge lower mandible: red mouth, white teeth pointing up
+        Part jawL = head.add("jawL").at(0, -2f, 5);
+        jawL.box(-4.5f, -2.5f, 0, 9, 3, 10).color(BELLY).grad(SHELL, BELLY_D).bevel(0.2f);
+        jawL.box(-4, -0.6f, 0.5f, 8, 1, 9).color(GUM);
+        for (int i = 0; i < 8; i++) jawL.box(-4 + (i % 2) * 7.5f, -0.2f, 1 + i, 1, 2, 1).color(TOOTH).flat();
+        jawL.box(-1, -0.6f, 2, 2, 1, 4).color(MOUTH);                                                      // tongue/throat shadow
+        // tail: three tapering segments ending in a tail fin
+        Part tail = body.add("tail").at(0, 0, -6);
+        plate(tail.box(-4, -4, -5, 8, 9, 5));
+        Part tail2 = tail.add("tail2").at(0, 0, -5);
+        plate(tail2.box(-3, -3, -5, 6, 6, 5));
         Part tail3 = tail2.add("tail3").at(0, 0, -5);
-        plate(tail3.box(-1.5f, 0, -4, 3, 3, 4));
-        tail3.box(-0.5f, 1, -6, 1, 1, 2).color(SHELL_D);
-        // ---- upright segmented body (chain of pivots so it can rear and lunge)
-        plate(body.box(-4.5f, 0, -3.5f, 9, 6, 7));
-        body.box(-3.5f, 0.5f, 3, 7, 5, 1).color(BELLY).grad(BELLY, BELLY_D).band(2, 1, BELLY_D);   // belly plate
-        Part seg2 = body.add("seg2").at(0, 6, 0);
-        plate(seg2.box(-4, 0, -3, 8, 5, 6));
-        seg2.box(-3, 0.5f, 2.5f, 6, 4, 1).color(BELLY).grad(BELLY, BELLY_D);
-        seg2.box(-1, 3, -4, 2, 2, 2).color(SHELL_D).bevel(0.3f);                                 // dorsal knob
-        Part seg3 = seg2.add("seg3").at(0, 5, 0.5f);
-        plate(seg3.box(-3.5f, 0, -2.5f, 7, 4, 5));
-        seg3.box(-2.5f, 0.5f, 2, 5, 3, 1).color(BELLY).grad(BELLY, BELLY_D);
-        seg3.box(-1, 2, -3.5f, 2, 2, 2).color(SHELL_D).bevel(0.3f);
-        // ---- big armoured head
-        Part head = seg3.add("head").at(0, 4, 0.5f);
-        plate(head.box(-4.5f, 0, -3.5f, 9, 5, 7));
-        head.box(-5, 3, -3, 10, 2, 5).color(SHELL_D).bevel(0.2f).inflate(0.2f);                  // brow ridge
-        head.box(-4, 0, 3, 8, 5, 1).color(SHELL).grad(SHELL_L, SHELL_D)
-            .glow(Face.FRONT, 1, 1, 1, 1, EYE).glow(Face.FRONT, 6, 1, 1, 1, EYE)                  // beady eyes
-            .paint(Face.FRONT, 0, 0, 8, 1, SHELL_D);
-        // horns sweeping back
+        plate(tail3.box(-2, -2.5f, -5, 4, 5, 5));
+        tail3.box(-0.5f, -5, -9, 1, 11, 5).color(SHELL_L).bevel(0.15f);                                       // vertical tail fin
+        // stubby clawed front/back limbs
         for (int s = -1; s <= 1; s += 2) {
-            Part horn = head.add(s < 0 ? "hornR" : "hornL").at(s * 4, 4, -1).rot(-35, 0, s * -25);
-            horn.box(-1, 0, -1, 2, 3, 2).color(SHELL_D).bevel(0.2f);
-            horn.box(-0.5f, 3, -0.5f, 1, 2, 1).color(BELLY_D);
+            Part leg = body.add(s < 0 ? "legR" : "legL").at(s * 5, -3, s < 0 ? 4 : 4).rot(0, 0, s * -12);
+            leg.box(-1.2f, -5, -1.2f, 3, 5, 3).color(SHELL_D).bevel(0.2f);
+            for (int c = 0; c < 3; c++) leg.box(-1.5f + c, -6, 0.5f, 1, 1, 2).color(TOOTH).flat();
         }
-        // upper jaw (snout) and big lower mandible with teeth
-        Part jawU = head.add("jawU").at(0, 1, 4);
-        jawU.box(-4, 0, 0, 8, 3, 4).color(SHELL).grad(SHELL_L, SHELL_D).bevel(0.2f);
-        jawU.box(-3.5f, -0.5f, 0, 7, 1, 3).color(GUM);
-        for (int i = 0; i < 4; i++) jawU.box(-3.5f + i * 2, -1.5f, 3, 1, 1, 1).color(TOOTH).flat();
-        jawU.box(-4, -2, 0.5f, 1, 2, 1).color(TOOTH).flat();
-        jawU.box(3, -2, 0.5f, 1, 2, 1).color(TOOTH).flat();
-        Part jawL = head.add("jawL").at(0, 0.5f, 2.5f);
-        jawL.box(-5, -3, 0, 10, 3, 6).color(BELLY).grad(SHELL, BELLY_D).bevel(0.25f);             // huge underbite
-        jawL.box(-4, 0, 0.5f, 8, 1, 4).color(MOUTH);
-        for (int i = 0; i < 5; i++) jawL.box(-4.5f + i * 2, 0, 5, 1, 2, 1).color(TOOTH).flat();
-        jawL.box(-5, 0, 3, 1, 3, 1).color(TOOTH).flat();                                          // tusks
-        jawL.box(4, 0, 3, 1, 3, 1).color(TOOTH).flat();
-        // tiny stub legs on the base
-        for (int s = -1; s <= 1; s += 2) {
-            Part leg = body.add(s < 0 ? "legR" : "legL").at(s * 4.5f, 2, 1);
-            leg.box(-1, -2, -1, 2, 3, 2).color(SHELL_D).bevel(0.2f);
-        }
-
         m.look("head", 30, 20);
         m.clip("walk", 20).loop()
             .rot("body", 0, 6, 0, 0).rot("body", 10, -6, 0, 0).rot("body", 20, 6, 0, 0)
@@ -134,7 +126,7 @@ public final class JawWorm {
 
     public static MobDef def() {
         return MobDef.of("jaw_worm", "Jaw Worm", "ジョーワーム")
-            .game(1, 1).size(0.9f, 1.4f).hp(42).speed(0.22f).style(Style.INSECT).egg(SHELL, BELLY)
+            .game(1, 1).size(1.3f, 1.1f).hp(42).speed(0.22f).style(Style.INSECT).egg(SHELL, BELLY)
             .model(JawWorm::model)
             .spawn(8, 1, 1, MobDef.Habitat.PLAINS)
             .pattern(Pattern.first("chomp", Pattern.random().add("chomp", 25).add("thrash", 30).add("bellow", 45)
