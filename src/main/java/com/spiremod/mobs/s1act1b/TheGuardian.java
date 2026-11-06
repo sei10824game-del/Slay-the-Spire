@@ -16,44 +16,49 @@ public final class TheGuardian {
     static final int ST = 0xd8b858, ST_D = 0x8a7430, ST_L = 0xf0dc8c, GOLD = 0x4a4c9a, CORE = 0xffa030;
 
     public static ModelSpec model() {
-        ModelSpec m = new ModelSpec("the_guardian").scale(2.1f);
+        ModelSpec m = new ModelSpec("the_guardian").scale(1.7f);
+        // StS1 Guardian: tall, spindly gold legs on bird feet, a small blue-violet spring body, and two huge arms made of floating gold plate shards
         for (int s = -1; s <= 1; s += 2) {
-            Part leg = m.add(s < 0 ? "legR" : "legL").at(s * 5, 6, 0);
-            leg.box(-3, -6, -3, 6, 6, 6).color(ST).grad(ST, ST_D).bevel(0.14f).noise(0.08f);
-            leg.box(-3.5f, -6, -3.5f, 7, 2, 8).color(ST_D).bevel(0.15f);
-            leg.box(-3.3f, -3, -3.3f, 6, 1, 6).color(GOLD).flat().inflate(0.3f);
+            Part leg = m.add(s < 0 ? "legR" : "legL").at(s * 5, 18, 0);
+            leg.box(-1.5f, -10, -1.5f, 3, 10, 3).color(ST).grad(ST_L, ST_D).bevel(0.15f);
+            leg.box(-2, -4, -2, 4, 2, 4).color(ST_L).bevel(0.15f);                                  // knee guard
+            Part low = leg.add(s < 0 ? "lowR" : "lowL").at(0, -10, 0);
+            low.box(-1.2f, -9, -1.2f, 2, 9, 2).color(ST).grad(ST, ST_D).bevel(0.15f);
+            for (int t = -1; t <= 1; t++) low.box(t * 2 - 0.5f, -9.5f, 0, 1, 1, 5).color(ST_D).bevel(0.1f);   // three bird toes
+            low.box(-0.5f, -9.5f, -3, 1, 1, 3).color(ST_D);                                          // heel claw
         }
-        Part body = m.add("body").at(0, 6, 0);
-        body.box(-6, 0, -4, 12, 4, 8).color(ST_D).grad(ST, ST_D).bevel(0.14f);
-        Part torso = body.add("torso").at(0, 4, 0);
-        torso.box(-8, 0, -5, 16, 12, 10).color(ST).grad(ST_L, ST_D).bevel(0.14f).noise(0.08f)
-            .paint(Face.FRONT, 0, 6, 16, 1, ST_D);
-        torso.box(-8.4f, 2, -5.4f, 16, 1, 10).color(GOLD).flat().inflate(0.4f);                        // gold band
-        Part core = torso.add("core").at(0, 7, 5);
-        core.box(-3, -3, -0.5f, 6, 6, 1).color(0x302018).bevel(0.2f)
-            .glow(Face.FRONT, 1, 1, 4, 4, CORE).glow(Face.FRONT, 2, 2, 2, 2, 0xfff0b0);                 // glowing chest eye-core
+        Part body = m.add("body").at(0, 18, 0);
+        for (int i = 0; i < 4; i++) body.box(-2.5f, i * 2.2f, -2.5f, 5, 2, 5).color(GOLD).grad(0x7a7ccc, GOLD).bevel(0.2f);   // spring waist
+        Part torso = body.add("torso").at(0, 8, 0);
+        torso.box(-5, 0, -3.5f, 10, 6, 7).color(GOLD).grad(0x7a7ccc, 0x32347a).bevel(0.25f).noise(0.08f);
+        Part core = torso.add("core").at(0, 3, 3.5f);
+        core.box(-2, -2, -0.5f, 4, 4, 1).color(0x302018).bevel(0.2f)
+            .glow(Face.FRONT, 1, 1, 2, 2, CORE).glow(Face.FRONT, 1, 1, 2, 2, 0xfff0b0);
         for (int i = 0; i < 4; i++) { // back plates
-            Part pl = torso.add("plate" + i).at(-6 + i * 4, 10, -5);
-            pl.box(-1.5f, -2, -1, 3, 8, 2).color(ST_L).grad(ST_L, ST).bevel(0.15f);
+            Part pl = torso.add("plate" + i).at(-4.5f + i * 3, 6, -3.5f);
+            pl.box(-1, -2, -1, 2, 6, 1).color(ST_L).grad(ST_L, ST).bevel(0.15f);
         }
         // spikes shown in defensive mode (Sharp Hide)
         for (int i = 0; i < 8; i++) {
-            Part sp = torso.add("spike" + i).at(-7 + (i % 4) * 4.6f, i < 4 ? 11 : 4, i < 4 ? -4 : -5.5f).rot(i < 4 ? -40 : -85, 0, 0);
+            Part sp = torso.add("spike" + i).at(-6 + (i % 4) * 4f, i < 4 ? 6 : 1, i < 4 ? -3 : -4).rot(i < 4 ? -40 : -85, 0, 0);
             sp.box(-1, 0, -1, 2, 5, 2).color(0xd8dce6).grad(0xf4f6fa, ST).bevel(0.1f);
         }
-        Part head = torso.add("head").at(0, 12, 0.5f);
-        head.box(-4, 0, -4, 8, 6, 8).color(ST).grad(ST_L, ST).bevel(0.15f).noise(0.07f)
-            .paint(Face.FRONT, 1, 2, 6, 1, 0x20140c).glow(Face.FRONT, 1, 2, 2, 1, CORE).glow(Face.FRONT, 5, 2, 2, 1, CORE);
-        head.box(-4.5f, 5, -4.5f, 9, 2, 9).color(GOLD).grad(0xe0c060, GOLD).bevel(0.15f);                // crown rim
-        head.box(-1, 7, -1, 2, 3, 2).color(GOLD).flat();
-        for (int s = -1; s <= 1; s += 2) {
-            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 11.5f, 10, 0);
-            arm.box(-4, -3, -4, 8, 6, 8).color(ST_L).grad(ST_L, ST).bevel(0.14f);                        // pauldron
-            arm.box(-3, -12, -3, 6, 9, 6).color(ST).grad(ST, ST_D).bevel(0.12f).noise(0.08f);
-            arm.box(-3.4f, -8, -3.4f, 6, 2, 6).color(GOLD).flat().inflate(0.4f);
-            Part hand = arm.add(s < 0 ? "handR" : "handL").at(0, -12, 0);
-            hand.box(-4, -7, -4, 8, 7, 8).color(ST_D).grad(ST, ST_D).bevel(0.14f).noise(0.08f);
-            for (int i = 0; i < 3; i++) hand.box(-3 + i * 2.6f, -7.5f, 3.5f, 2, 2, 1).color(0xd8dce6).flat();   // knuckle spikes
+        Part head = torso.add("head").at(0, 6, 0);
+        head.box(-3, 0, -3, 6, 5, 6).color(0x6a6cb8).grad(0x9a9cdc, 0x4a4c9a).bevel(0.2f).noise(0.07f)
+            .glow(Face.FRONT, 2, 1, 2, 2, 0x70ff90);                                               // green gem eye
+        head.box(-1, 5, -1, 2, 3, 2).color(ST).flat();
+        for (int s = -1; s <= 1; s += 2) {                                                          // giant arms of floating plate shards
+            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 5, 5, 0).rot(0, 0, s * 125);
+            arm.box(-1.2f, -9, -1.2f, 2, 9, 2).color(GOLD).grad(0x7a7ccc, GOLD).bevel(0.2f);       // thin blue-violet strut
+            for (int i = 0; i < 5; i++) {
+                Part sh = arm.add((s < 0 ? "shR" : "shL") + i).at((i % 2 == 0 ? 2.5f : -2.5f), -2 - i * 3.6f, 0).rot(0, i * 20, (i % 2 == 0 ? 20 : -20));
+                sh.box(-2, -2.5f, -0.5f, 4, 5, 1).color(ST).grad(ST_L, ST_D).bevel(0.12f);
+            }
+            Part hand = arm.add(s < 0 ? "handR" : "handL").at(0, -9, 0);
+            for (int i = 0; i < 4; i++) {
+                Part sh = hand.add((s < 0 ? "hR" : "hL") + i).at(i % 2 == 0 ? 3 : -3, -2 - i * 3.2f, 0).rot(0, i * 25, i * 15 - 20);
+                sh.box(-3, -3, -0.5f, 6, 6, 1).color(ST).grad(ST_L, ST_D).bevel(0.12f);
+            }
         }
         m.look("head", 40, 20);
         m.walkBiped("legR", "legL", "armR", "armL", 28f, 20f);
