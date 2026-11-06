@@ -26,3 +26,8 @@ One session/agent per package using the prompt: "Read docs/CREATURE_GUIDE.md + m
 ## Hero card pool (wiki-synced)
 Hero moves = hand-written signature cards (Heroes.java) + every parsable wiki card of their colour (CardMoves.java, ~35-55 moves each).
 After a game update that changes cards: `python3 tools/gen_cards.py` (pulls the wiki Cargo `Cards` table -> heroes/CardData.java), then rebuild. Only damage/block/Weak/Vulnerable/Poison/Strength/Dexterity/Focus/Thorns/Metallicize/heal text is interpreted; other effects (draw, exhaust, orbs...) are ignored.
+
+## Downfall villains (StS1 expansion, hero versions)
+ids df_hexaghost, df_guardian, df_slimebound, df_champ, df_automaton, df_collector, df_gremlin, df_snecko, df_awakened_one (heroes/Villains.java). HP from the mod's character classes; moves = every parsable card in the Downfall source.
+Regenerate card data from a Downfall checkout: `python3 tools/gen_downfall.py /path/to/DownfallSTS` (repo sei10824game-del/DownfallSTS) -> heroes/DownfallData.java. Villain-specific mechanics (Soulburn, stances, Stasis, Compile...) are ignored; only damage/block/Weak/Vulnerable/Poison/Strength/heal text is interpreted.
+sei10824game-del/Downfall-2 is the StS2 version of Downfall (C#, per-character `localization/eng/cards.json`) — not used yet.

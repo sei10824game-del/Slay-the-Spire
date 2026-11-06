@@ -8,5 +8,6 @@ public final class Group {
     private Group() {}
     public static void collect(Consumer<MobDef> out) {
         for (Heroes.Spec h : Heroes.ALL) out.accept(h.def());
+        for (MobDef d : Villains.defs()) out.accept(d);
     }
 }

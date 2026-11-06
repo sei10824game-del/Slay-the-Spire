@@ -31,7 +31,7 @@ final class CardMoves {
     static Fxs parse(String text) {
         Fxs f = new Fxs();
         Matcher m = DMG.matcher(text);
-        if (m.find()) { f.dmg = Integer.parseInt(m.group(1)); if (m.group(2) != null) f.hits = Math.min(8, Integer.parseInt(m.group(2))); f.aoe = m.group(3) != null; }
+        if (m.find()) { f.dmg = Integer.parseInt(m.group(1)); if (m.group(2) != null) f.hits = Math.min(7, Integer.parseInt(m.group(2))); f.aoe = m.group(3) != null; }
         m = BLK.matcher(text); if (m.find()) f.block = Integer.parseInt(m.group(1));
         m = APPLY.matcher(text);
         while (m.find()) {
@@ -46,12 +46,26 @@ final class CardMoves {
     }
 
     /** adds every parsable card of (game,color) as a move and makes the pattern pick among hand-written moves (weighted) and cards */
-    static MobDef finish(MobDef d, int game, String color) {
+    static MobDef finish(MobDef d, int game, String color) { return finish(d, String.valueOf(game), color); }
+
+    /** game: "1"/"2" = wiki CardData, "DF" = Downfall DownfallData (color = villain id) */
+    static String[] rows(String game) { return game.equals("DF") ? DownfallData.ROWS : CardData.ROWS; }
+
+    /** parsed effects of the named basic card (e.g. "Strike"), or null */
+    static Fxs basic(String game, String color, String name) {
+        for (String row : rows(game)) {
+            String[] c = row.split("\\|", 7);
+            if (c.length == 7 && c[0].equals(game) && c[1].equals(color) && c[2].equalsIgnoreCase(name)) return parse(c[6]);
+        }
+        return null;
+    }
+
+    static MobDef finish(MobDef d, String game, String color) {
         List<String> own = new ArrayList<>(d.moves.keySet());
         List<String> cards = new ArrayList<>();
-        for (String row : CardData.ROWS) {
+        for (String row : rows(game)) {
             String[] c = row.split("\\|", 7);
-            if (!c[0].equals(String.valueOf(game)) || !c[1].equals(color) || c.length < 7) continue;
+            if (c.length < 7 || !c[0].equals(game) || !c[1].equals(color)) continue;
             String id = slug(c[2]);
             if (HAND.contains(id.substring(2)) || d.moves.containsKey(id)) continue;
             Fxs f = parse(c[6]);
