@@ -13,31 +13,27 @@ import net.minecraft.sounds.SoundEvents;
 public final class Donu {
     private Donu() {}
 
-    static final int TEAL = 0x2f8fa8, TEAL_D = 0x1b5468, TEAL_L = 0x58bfd8, GOLD = 0xd8b04a, GLOW = 0x9ffcff, DARK = 0x10282f;
+    static final int GREEN = 0x78cc78, GREEN_D = 0x3c8a4a, GREEN_L = 0xa8ecb0, GOLD = 0xd8b04a, GLOW = 0xe8ffe0, DARK = 0x143a1c;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("donu");
-        Part root = m.add("root").at(0, 16, 0);
-        Part core = root.add("core").at(0, 10, 0);
-        core.cbox(-7, 14, 14, 14).color(TEAL).grad(TEAL_L, TEAL_D).bevel(0.5f).noise(0.06f);
-        core.cbox(-6, 16, 12, 12).color(TEAL).bevel(0.4f).noise(0.06f);                         // chamfered "sphere"
-        core.cbox(-4, 12, 8, 16).color(TEAL).bevel(0.4f);
-        core.box(-4, -2, 7.2f, 8, 4, 1).color(DARK).glow(Face.FRONT, 2, 1, 4, 2, GLOW).paint(Face.FRONT, 0, 0, 8, 1, 0x061418);   // the eye
-        core.box(-2, 7, -2, 4, 3, 4).color(GOLD).flat();                                       // top cap
-        core.box(-1, 10, -1, 2, 4, 2).color(GOLD).flat();
-        // hanging crystal tail
-        Part tail = root.add("tail").at(0, 3, 0);
-        tail.cbox(-6, 8, 6, 8).color(TEAL_D).grad(TEAL, TEAL_D).bevel(0.4f);
-        tail.cbox(-12, 5, 6, 5).color(TEAL_D).bevel(0.4f);
-        tail.cbox(-18, 3, 6, 3).color(TEAL_L).glow(Face.FRONT, 1, 1, 1, 3, GLOW).bevel(0.3f);
-        // the halo: eight bars on an octagon, tilted, spun by proc
-        Part ring = root.add("ring").at(0, 10, 0).rot(25, 0, 0);
-        for (int i = 0; i < 8; i++) {
-            double a = Math.toRadians(i * 45);
-            Part bar = ring.add("bar" + i).at((float) (Math.cos(a) * 13), 0, (float) (Math.sin(a) * 13)).rot(0, (float) -(i * 45 + 90), 0);
-            bar.box(-5, -1.25f, -1.25f, 10, 3, 3).color(i % 2 == 0 ? GOLD : TEAL_L).bevel(0.2f);
-            if (i % 2 == 0) bar.box(-1, -1, -2.2f, 2, 2, 1).color(GLOW).flat();
+        // StS1 Donu: a fat green ring (donut) with a bulging side wall, a small mouth-eye and four stubby legs
+        Part root = m.add("root").at(0, 8, 0);
+        Part core = root.add("core").at(0, 16, 0);
+        // the torus stands like a wheel facing the front; a real hole goes through it
+        core.box(-14, -14, -7, 28, 7, 14).color(GREEN).grad(GREEN_L, GREEN_D).bevel(1.2f).noise(0.1f).glow(Face.FRONT, 0, 0, 28, 7, GREEN).glow(Face.TOP, 0, 0, 28, 14, GREEN_L);   // bottom
+        core.box(-14, 7, -7, 28, 7, 14).color(GREEN).grad(GREEN_L, GREEN_D).bevel(1.2f).noise(0.1f).glow(Face.FRONT, 0, 0, 28, 7, GREEN_L).glow(Face.TOP, 0, 0, 28, 14, GREEN_L);    // top
+        core.box(-14, -7, -7, 7, 14, 14).color(GREEN).grad(GREEN_L, GREEN_D).bevel(1.2f).noise(0.1f).glow(Face.FRONT, 0, 0, 7, 14, GREEN).glow(Face.LEFT, 0, 0, 14, 14, GREEN);     // left
+        core.box(7, -7, -7, 7, 14, 14).color(GREEN).grad(GREEN_L, GREEN_D).bevel(1.2f).noise(0.1f).glow(Face.FRONT, 0, 0, 7, 14, GREEN).glow(Face.RIGHT, 0, 0, 14, 14, GREEN);     // right
+        core.box(-3, -12, 7.2f, 6, 2, 1).color(DARK).glow(Face.FRONT, 1, 0, 4, 1, GLOW);     // tiny eye on the lower rim
+        for (int i = 0; i < 4; i++) {                                           // stubby legs
+            double ang = Math.toRadians(i * 90 + 45);
+            Part leg = root.add("leg" + i).at((float) (Math.cos(ang) * 9), 0, (float) (Math.sin(ang) * 9));
+            leg.box(-1.5f, -6, -1.5f, 3, 6, 3).color(GREEN_D).bevel(0.3f);
+            leg.box(-2.5f, -8, -2.5f, 5, 2, 5).color(GREEN_D).bevel(0.3f);
         }
+        Part tail = root.add("tail").at(0, 3, 0); tail.box(-0.5f, -0.5f, -0.5f, 1, 1, 1).color(GREEN_D);
+        Part ring = root.add("ring").at(0, 10, 0); ring.box(-0.5f, -0.5f, -0.5f, 1, 1, 1).color(GREEN_D);
         m.bob(1.0f, 0.06f);
         m.proc((rig, c) -> {
             float spin = c.age * (c.move != null && c.move.equals("circle_of_power") ? 14f : 3f);
@@ -73,7 +69,7 @@ public final class Donu {
 
     public static MobDef def() {
         return MobDef.of("donu", "Donu", "ドヌ")
-            .game(1, 3).size(1.5f, 2.6f).hp(250).speed(0.18f).flying().kbResist(0.9f).style(Style.METAL).egg(0x2f8fa8, 0xd8b04a)
+            .game(1, 3).size(1.5f, 2.6f).hp(250).speed(0.18f).flying().kbResist(0.9f).style(Style.METAL).egg(0x78cc78, 0xa8ecb0)
             .model(Donu::model).boss()
             .onSpawn(s -> {
                 s.setCount("artifact", 2);

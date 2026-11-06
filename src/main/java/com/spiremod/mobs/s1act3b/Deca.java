@@ -13,31 +13,34 @@ import net.minecraft.sounds.SoundEvents;
 public final class Deca {
     private Deca() {}
 
-    static final int AMB = 0xd4802a, AMB_L = 0xf0a850, AMB_D = 0x8a4a14, GLOW = 0xffe070, DARK = 0x2a1608, STEEL = 0x8a8f98;
+    static final int ORANGE = 0xf0902c, ORANGE_D = 0xa8501c, ORANGE_L = 0xffc060, GLOW = 0xfff0c0, DARK = 0x4a2008;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("deca");
-        Part root = m.add("root").at(0, 16, 0);
-        Part core = root.add("core").at(0, 10, 0);
-        Part cube = core.add("cube").at(0, 0, 0).rot(0, 45, 0);
-        cube.cbox(-7, 14, 14, 14).color(AMB).grad(AMB_L, AMB_D).bevel(0.5f).noise(0.06f);
-        cube.cbox(-1, 14, 2, 14).inflate(0.2f).color(AMB_D).flat();                              // seam band
+        // StS1 Deca: a gleaming orange crystal (octahedron) with sharp spikes underneath
+        Part root = m.add("root").at(0, 10, 0);
+        Part core = root.add("core").at(0, 14, 0);
+        Part cube = core.add("cube").at(0, 0, 0);                                           // the crystal body (spun slowly by proc)
+        int[] w = {4, 10, 16, 21, 24, 24, 21, 16, 10, 4};
+        for (int i = 0; i < w.length; i++)
+            cube.box(-w[i] / 2f, -15 + i * 3, -w[i] / 2f, w[i], 3, w[i]).color(ORANGE).grad(i < 5 ? ORANGE_L : ORANGE, i < 5 ? ORANGE : ORANGE_D).bevel(0.3f).noise(0.08f)
+                .glow(Face.FRONT, 0, 0, w[i], 3, i < 5 ? ORANGE_L : ORANGE).glow(Face.LEFT, 0, 0, w[i], 3, ORANGE).glow(Face.RIGHT, 0, 0, w[i], 3, ORANGE).glow(Face.BACK, 0, 0, w[i], 3, ORANGE);
         Part face = core.add("face").at(0, 0, 0);
-        face.box(-5, -1.5f, 9.2f, 10, 3, 1).color(DARK).glow(Face.FRONT, 1, 1, 8, 1, GLOW);   // slit eye
-        face.box(-6.5f, 3, 8.4f, 3, 3, 2).color(AMB_D).bevel(0.2f);
-        face.box(3.5f, 3, 8.4f, 3, 3, 2).color(AMB_D).bevel(0.2f);
-        Part crest = core.add("crest").at(0, 9, 0);
-        for (int i = -1; i <= 1; i++) crest.box(i * 3.5f - 1, 0, -1, 2, 5 - Math.abs(i) * 1, 2).color(STEEL).flat().bevel(0.2f);
-        Part under = core.add("under").at(0, -8, 0);
-        under.cbox(-6, 6, 6, 6).color(AMB_D).bevel(0.3f);
-        under.cbox(-10, 3, 4, 3).color(AMB).bevel(0.2f);
-        // four square plates orbit the core
-        for (int i = 0; i < 4; i++) {
-            Part pl = root.add("plate" + i).at(0, 10, 0);
-            Part sq = pl.add("sq" + i).at(0, 0, 15);
-            sq.box(-4, -4, -1, 8, 8, 2).color(i % 2 == 0 ? AMB_L : STEEL).bevel(0.25f)
-                .paint(Face.FRONT, 2, 2, 4, 4, i % 2 == 0 ? AMB_D : 0x5a5f68).glow(Face.FRONT, 3, 3, 2, 2, GLOW);
+        face.box(-3, -1, 12.6f, 6, 3, 1).color(DARK).glow(Face.FRONT, 1, 1, 4, 1, GLOW);       // small glowing eye on the front
+        for (int i = 0; i < 4; i++) {                                                         // four spike legs
+            double ang = Math.toRadians(i * 90 + 45);
+            Part leg = root.add("leg" + i).at((float) (Math.cos(ang) * 6), 0, (float) (Math.sin(ang) * 6));
+            leg.box(-1.2f, -7, -1.2f, 3, 7, 3).color(ORANGE).grad(ORANGE_L, ORANGE_D).bevel(0.2f).glow(Face.FRONT, 0, 0, 3, 7, ORANGE);
+            leg.box(-0.6f, -11, -0.6f, 1, 4, 1).color(ORANGE_L).flat();
         }
+        for (int i = 0; i < 4; i++) {                                                         // four square plates orbit the crystal
+            Part pl = root.add("plate" + i).at(0, 14, 0);
+            Part sq = pl.add("sq" + i).at(0, 0, 18);
+            sq.box(-4, -4, -1, 8, 8, 2).color(i % 2 == 0 ? ORANGE_L : 0xb0b4bc).bevel(0.25f)
+                .paint(Face.FRONT, 2, 2, 4, 4, ORANGE_D).glow(Face.FRONT, 3, 3, 2, 2, GLOW);
+        }
+        Part tail = root.add("tail").at(0, 3, 0); tail.box(-0.5f, -0.5f, -0.5f, 1, 1, 1).color(ORANGE_D);
+        Part ring = root.add("ring").at(0, 10, 0); ring.box(-0.5f, -0.5f, -0.5f, 1, 1, 1).color(ORANGE_D);
         m.bob(1.0f, 0.06f);
         m.proc((rig, c) -> {
             boolean sq = c.move != null && c.move.equals("square_of_protection");
