@@ -15,7 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 public final class TimeEater {
     private TimeEater() {}
 
-    static final int TEAL = 0x2f4a55, TEAL_L = 0x44687a, TEAL_D = 0x1a2a33, BRASS = 0xc29a3a, BRASS_D = 0x8a6a22, CREAM = 0xe8dfc0, TICK = 0x3a2a14, RUST = 0x8a5a2a, GLOW = 0xffc040;
+    static final int TEAL = 0xa03aa0, TEAL_L = 0xd060c8, TEAL_D = 0x6a1a6c, BRASS = 0xc29a3a, BRASS_D = 0x8a6a22, CREAM = 0xe8dfc0, TICK = 0x3a2a14, RUST = 0x8a5a2a, GLOW = 0xffc040;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("time_eater");

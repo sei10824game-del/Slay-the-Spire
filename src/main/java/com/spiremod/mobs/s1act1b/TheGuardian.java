@@ -13,7 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
  */
 public final class TheGuardian {
     private TheGuardian() {}
-    static final int ST = 0x8a8f9a, ST_D = 0x474c58, ST_L = 0xb8bfcc, GOLD = 0xc8a040, CORE = 0xffa030;
+    static final int ST = 0xd8b858, ST_D = 0x8a7430, ST_L = 0xf0dc8c, GOLD = 0x4a4c9a, CORE = 0xffa030;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("the_guardian").scale(2.1f);

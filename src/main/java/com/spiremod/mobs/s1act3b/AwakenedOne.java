@@ -14,7 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 public final class AwakenedOne {
     private AwakenedOne() {}
 
-    static final int ROBE = 0x35395f, ROBE_L = 0x4d5488, ROBE_D = 0x1b1d38, TRIM = 0xc9b25a, SKIN = 0xb9c6d8, SKIN_D = 0x8798b0,
+    static final int ROBE = 0x2a8ad8, ROBE_L = 0x60b8f4, ROBE_D = 0x1a5a98, TRIM = 0xe8d070, SKIN = 0xb9c6d8, SKIN_D = 0x8798b0,
         EYE = 0xff2a2a, HORN = 0xe8e0c8, WING = 0x2a1a46, WING_L = 0x5b2f8f, GLOW = 0x9be86a;
 
     public static ModelSpec model() {

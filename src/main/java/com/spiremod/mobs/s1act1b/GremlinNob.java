@@ -12,7 +12,7 @@ import net.minecraft.sounds.SoundEvents;
  */
 public final class GremlinNob {
     private GremlinNob() {}
-    static final int SKIN = 0xb8854a, SKIN_D = 0x7a4a26, CLOTH = 0x3a2a3e, BONE = 0xe8dcc0, EYE = 0xff3020;
+    static final int SKIN = 0xc0202c, SKIN_D = 0x7a1018, CLOTH = 0x4a0e18, BONE = 0xe8e0c8, EYE = 0xffe040, GOLD = 0xe8c040;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("gremlin_nob").scale(1.5f);
@@ -26,13 +26,13 @@ public final class GremlinNob {
         body.box(-5, 0, -3, 10, 4, 6).color(CLOTH).grad(0x5a4560, CLOTH);
         body.box(-5.3f, -3, -3.3f, 10, 5, 6).color(CLOTH).grad(CLOTH, 0x241a28).inflate(0.3f).band(0, 1, BONE);   // loincloth
         Part torso = body.add("torso").at(0, 4, 0);
-        torso.box(-7, 0, -4, 14, 9, 8).color(SKIN).grad(0xd4a060, SKIN_D).bevel(0.12f).noise(0.08f)
-            .paint(Face.FRONT, 2, 1, 4, 3, 0xc8924f).paint(Face.FRONT, 8, 1, 4, 3, 0xc8924f).paint(Face.FRONT, 6, 3, 2, 5, SKIN_D);   // pecs, abs line
-        torso.box(-8, 8, -4.5f, 16, 2, 9).color(SKIN).grad(0xd4a060, SKIN).bevel(0.1f);                               // trapezius / shoulder bar
+        torso.box(-7, 0, -4, 14, 9, 8).color(SKIN).grad(0xe04858, SKIN_D).bevel(0.12f).noise(0.08f)
+            .paint(Face.FRONT, 2, 1, 4, 3, 0xd03040).paint(Face.FRONT, 8, 1, 4, 3, 0xd03040).paint(Face.FRONT, 6, 3, 2, 5, SKIN_D);   // pecs, abs line
+        torso.box(-8, 8, -4.5f, 16, 2, 9).color(SKIN).grad(0xe04858, SKIN).bevel(0.1f);                               // trapezius / shoulder bar
         torso.box(-7.3f, 0.5f, -4.3f, 14, 2, 8).color(0x5a3c2a).flat().noise(0.05f).inflate(0.3f);                // belt strap
         torso.box(-0.5f, 4, -4.4f, 1, 5, 1).color(BONE).flat();                                                    // bone charm
         Part head = torso.add("head").at(0, 9, 0.5f);
-        head.box(-4, 0, -4, 8, 7, 8).color(SKIN).grad(0xd4a060, SKIN).bevel(0.15f).noise(0.07f)
+        head.box(-4, 0, -4, 8, 7, 8).color(SKIN).grad(0xe04858, SKIN).bevel(0.15f).noise(0.07f)
             .paint(Face.FRONT, 0, 1, 8, 2, SKIN_D)                                                                 // brutal brow
             .glow(Face.FRONT, 1, 3, 2, 1, EYE).glow(Face.FRONT, 5, 3, 2, 1, EYE)
             .px(Face.FRONT, 2, 3, 0x200808).px(Face.FRONT, 5, 3, 0x200808);
@@ -46,11 +46,11 @@ public final class GremlinNob {
             Part ear = head.add(s < 0 ? "earR" : "earL").at(s * 4, 4, 0).rot(0, 0, s * -30);
             ear.box(s < 0 ? -4 : 0, -1, -1, 4, 2, 2).color(SKIN).bevel(0.15f);
             Part horn = head.add(s < 0 ? "hornR" : "hornL").at(s * 2.5f, 7, -1).rot(0, 0, s * -25);
-            horn.box(-0.5f, 0, -0.5f, 1, 3, 1).color(BONE).bevel(0.15f);
+            horn.box(-1, 0, -1, 2, 6, 2).color(GOLD).grad(0xfff0a0, GOLD).bevel(0.2f); horn.box(-1, 6, -2, 2, 3, 2).color(GOLD).bevel(0.2f);
         }
         for (int s = -1; s <= 1; s += 2) {
             Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 9.5f, 8, 0);
-            arm.box(-2.5f, -3, -2.5f, 5, 4, 5).color(SKIN).grad(0xd4a060, SKIN).bevel(0.12f);                       // shoulder
+            arm.box(-2.5f, -3, -2.5f, 5, 4, 5).color(SKIN).grad(0xe04858, SKIN).bevel(0.12f);                       // shoulder
             arm.box(-2, -9, -2, 4, 6, 4).color(SKIN).grad(SKIN, SKIN_D).bevel(0.1f).noise(0.08f);
             arm.box(-2.4f, -6.5f, -2.4f, 4, 2, 4).color(0x4a3a2a).flat().inflate(0.4f);                              // wrist strap
             arm.box(-0.5f, 1, -0.5f, 1, 2, 1).color(BONE).flat();                                                    // shoulder spike

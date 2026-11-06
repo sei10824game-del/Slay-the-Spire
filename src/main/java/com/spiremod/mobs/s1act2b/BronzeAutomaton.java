@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 public final class BronzeAutomaton {
     private BronzeAutomaton() {}
 
-    static final int BR = 0xc08a3a, BR_L = 0xeac06a, BR_D = 0x7a5220, BR_DD = 0x4a3014, BLUE = 0x5fe8ff, BLUE_D = 0x1a6a8a, VERD = 0x5f9a80;
+    static final int BR = 0xd8c280, BR_L = 0xf6ecb4, BR_D = 0x9a8650, BR_DD = 0x5e5028, BLUE = 0x5fe8ff, BLUE_D = 0x1a6a8a, VERD = 0x5f9a80;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("bronze_automaton");

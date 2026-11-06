@@ -13,4 +13,5 @@ StS2: Aeonglass, Assassin Raider, Chomper, Corpse Slug, Cubex Construct, Calcifi
 
 ## Fixed so far (rebuilt/recoloured against the wiki art)
 Lagavulin, Hexaghost, Jaw Worm, Slime Boss, Sentry, Corrupt Heart, Donu, Deca (all StS1).
+Palette-only fixes (silhouette still differs, needs geometry rework): Gremlin Nob, Time Eater, The Collector, Bronze Automaton, The Guardian, Awakened One.
 Remaining list above = still to do; method: render with tools/preview.sh, compare to wiki image, iterate.

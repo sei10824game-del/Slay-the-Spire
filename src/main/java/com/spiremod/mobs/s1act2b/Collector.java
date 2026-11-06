@@ -11,7 +11,7 @@ import net.minecraft.sounds.SoundEvents;
  */
 public final class Collector {
     private Collector() {}
-    static final int ROBE = 0x4a2a6a, ROBE_D = 0x2a1640, ROBE_L = 0x6e44a0, GOLD = 0xe0b040, GOLD_D = 0x9a7418, BONE = 0xe6dcc0, BONE_D = 0xa89c80, FIRE = 0xff9a20, EYE = 0x7fff9a, WOOD = 0x4a3220;
+    static final int ROBE = 0x1c7a78, ROBE_D = 0x0c4448, ROBE_L = 0x30a898, GOLD = 0xe0b040, GOLD_D = 0x9a7418, BONE = 0xe6dcc0, BONE_D = 0xa89c80, FIRE = 0xff9a20, EYE = 0x7fff9a, WOOD = 0x4a3220;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("collector");
