@@ -11,29 +11,29 @@ import net.minecraft.sounds.SoundEvents;
  */
 public final class Sentry {
     private Sentry() {}
-    static final int METAL = 0x7a8088, METAL_D = 0x3a3e46, METAL_L = 0xaeb6bc, EYE = 0xffa020;
+    static final int SAND = 0xd8c68a, SAND_D = 0x8a7a48, SAND_L = 0xf2e6b4, EYE = 0x6ad0ff;
 
     public static ModelSpec model() {
-        ModelSpec m = new ModelSpec("sentry");
-        Part core = m.add("core").at(0, 13, 0);
-        core.box(-4, -9, -4, 8, 18, 8).color(METAL).grad(METAL_L, METAL_D).bevel(0.15f).noise(0.07f)
-            .paint(Face.FRONT, 0, 5, 8, 1, METAL_D).paint(Face.FRONT, 0, 12, 8, 1, METAL_D);
-        core.box(-4.5f, 8, -4.5f, 9, 2, 9).color(METAL_D).bevel(0.2f);                       // cap
-        core.box(-1, 10, -1, 2, 3, 2).color(METAL_L).flat();                                 // antenna
-        core.box(-4.5f, -10, -4.5f, 9, 2, 9).color(METAL_D).bevel(0.2f);
-        for (int i = 0; i < 3; i++) core.box(-3 + i * 3, -14, -0.5f, 2, 4, 1).color(METAL_L).flat();   // underside prongs
-        Part eye = core.add("eye").at(0, 2, 4);
-        eye.box(-3, -3, -0.5f, 6, 6, 1).color(0x281810).bevel(0.2f)
-            .glow(Face.FRONT, 1, 1, 4, 4, EYE).glow(Face.FRONT, 2, 2, 2, 2, 0xfff0b0);
-        Part lid = eye.add("lid").at(0, 3, 0.6f);
-        lid.box(-3, -1.5f, 0, 6, 2, 1).color(METAL_D).bevel(0.2f);
-        for (int s = -1; s <= 1; s += 2) {
-            Part w = core.add(s < 0 ? "wingR" : "wingL").at(s * 4.5f, 4, 0);
-            w.box(s < 0 ? -2 : 0, -10, -3, 2, 16, 6).color(METAL).grad(METAL_L, METAL_D).bevel(0.15f);
-            w.box(s < 0 ? -4 : 2, -6, -2, 2, 10, 4).color(METAL_D).bevel(0.15f).grad(METAL, METAL_D);
-            w.box(s < 0 ? -5 : 4, -3, -0.5f, 1, 4, 1).color(METAL_L).flat();
-            w.box(s < 0 ? -2.5f : 2, -9, 2.8f, 1, 14, 1).color(EYE).flat().glow(Face.FRONT, 0, 0, 1, 14, EYE);   // light strip
-        }
+        // StS1 Sentry: two sand-coloured pyramids (upper points up, lower is an open inverted cup ending in a spike) hovering around a glowing blue orb
+        ModelSpec m = new ModelSpec("sentry").scale(0.65f);
+        Part core = m.add("core").at(0, 24, 0);
+        Part eye = core.add("eye").at(0, 0, 0);
+        eye.box(-3, -3, -3, 6, 6, 6).color(0x3a9ae8).grad(0x9ae0ff, 0x2a70c0).bevel(0.5f)
+            .glow(Face.FRONT, 0, 0, 6, 6, 0x6ad0ff).glow(Face.LEFT, 0, 0, 6, 6, 0x4ab0f0).glow(Face.RIGHT, 0, 0, 6, 6, 0x4ab0f0).glow(Face.TOP, 0, 0, 6, 6, 0xb0f0ff)
+            .glow(Face.BACK, 0, 0, 6, 6, 0x4ab0f0).glow(Face.BOTTOM, 0, 0, 6, 6, 0x2a80d0);
+        eye.box(-1.5f, 0, 3, 3, 2, 1).color(0xe8ffff).flat().glow(Face.FRONT, 0, 0, 3, 2, 0xe8ffff);          // bright pupil highlight
+        Part lid = eye.add("lid").at(0, 3, 0);
+        lid.box(-1, 0, 0, 1, 1, 1).color(0x3a9ae8).flat();
+        int[] pw = {16, 14, 12, 10, 8, 6, 4, 2};
+        Part up = core.add("wingR").at(0, 4, 0);                                                                // upper pyramid, point up
+        for (int i = 0; i < pw.length; i++)
+            up.box(-pw[i] / 2f, i * 3, -pw[i] / 2f, pw[i], 3, pw[i]).color(SAND).grad(SAND_L, SAND_D).bevel(0.15f).noise(0.12f)
+                .paint(Face.FRONT, 0, 0, pw[i], 1, SAND_D).paint(Face.LEFT, 0, 0, pw[i], 1, SAND_D);
+        Part low = core.add("wingL").at(0, -4, 0);                                                              // lower pyramid: open cup, narrowing to a spike
+        for (int i = 0; i < pw.length; i++)
+            low.box(-pw[i] / 2f, -3 - i * 3, -pw[i] / 2f, pw[i], 3, pw[i]).color(SAND_D).grad(SAND, SAND_D).bevel(0.15f).noise(0.12f);
+        low.box(-8, -1, -8, 16, 1, 2).color(SAND_L).bevel(0.1f); low.box(-8, -1, 6, 16, 1, 2).color(SAND_L).bevel(0.1f);        // cup rim
+        low.box(-8, -1, -6, 2, 1, 12).color(SAND_L).bevel(0.1f); low.box(6, -1, -6, 2, 1, 12).color(SAND_L).bevel(0.1f);
         m.look("core", 60, 25).bob(1.2f, 0.12f);
         m.clip("idle", 40).loop()
             .rot("wingR", 0, 0, 0, 8).rot("wingR", 20, 0, 0, 14).rot("wingR", 40, 0, 0, 8)
@@ -69,7 +69,7 @@ public final class Sentry {
 
     public static MobDef def() {
         return MobDef.of("sentry", "Sentry", "セントリー")
-            .game(1, 1).size(1.0f, 1.9f).hp(40).speed(0.15f).style(Style.METAL).elite().flying().egg(0x7a8088, 0xffa020)
+            .game(1, 1).size(1.0f, 1.8f).hp(40).speed(0.15f).style(Style.METAL).elite().flying().egg(0xd8c68a, 0x3a9ae8)
             .model(Sentry::model).spawn(2, 1, 3, MobDef.Habitat.MOUNTAIN)
             .onSpawn(s -> s.setVar(s.rand().nextInt(2)))
             .pattern(s -> s.getTurn() == 0 ? (s.getVar() == 0 ? "bolt" : "beam") : s.lastMove().equals("bolt") ? "beam" : "bolt")

@@ -12,7 +12,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
  */
 public final class SlimeBoss {
     private SlimeBoss() {}
-    static final int C = 0x78c43a, CL = 0xc4f070, CD = 0x3a7a22, EYE = 0x14200a;
+    static final int C = 0xb8ee2c, CL = 0xe0ff70, CD = 0x6cae1c, EYE = 0x1c3010;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("slime_boss").scale(2.6f);
@@ -33,19 +33,24 @@ public final class SlimeBoss {
         // face: two big angry eyes with brows
         for (int s = -1; s <= 1; s += 2) {
             Part eye = mid.add(s < 0 ? "eyeR" : "eyeL").at(s * 3.5f, 2.5f, 7);
-            eye.box(-2, -1.5f, -0.5f, 4, 3, 1).color(0xf4ffe0).flat().px(Face.FRONT, s < 0 ? 2 : 1, 1, EYE).px(Face.FRONT, s < 0 ? 2 : 1, 2, EYE);
+            eye.box(-2.5f, -0.5f, -0.5f, 5, 1, 1).color(EYE).flat();                                // closed, sad lid
+            eye.rot(0, 0, s * -14);
             Part brow = eye.add(s < 0 ? "browR" : "browL").at(0, 2, 0.1f).rot(0, 0, s * 20);
-            brow.box(-2.5f, 0, -0.5f, 5, 1, 1).color(CD).flat();
+            brow.box(-0.5f, 0, -0.5f, 1, 1, 1).color(C).flat();
         }
-        Part mouth = blob.add("mouth").at(0, 3.5f, 8.2f);
-        mouth.box(-5, -2, -0.5f, 10, 4, 1).color(0x1a0c10).flat().paint(Face.FRONT, 0, 0, 10, 1, CD)
-            .paint(Face.FRONT, 1, 0, 1, 1, 0xf0f0d0).paint(Face.FRONT, 4, 0, 1, 1, 0xf0f0d0).paint(Face.FRONT, 8, 0, 1, 1, 0xf0f0d0);
+        Part mouth = blob.add("mouth").at(0, 4.5f, 8.2f);
+        mouth.box(-6.5f, -3.5f, -0.5f, 13, 7, 1).color(0x22461c).flat().paint(Face.FRONT, 0, 0, 13, 1, C)
+            .paint(Face.FRONT, 2, 1, 1, 3, C).paint(Face.FRONT, 6, 1, 1, 2, C).paint(Face.FRONT, 10, 1, 1, 3, C).paint(Face.FRONT, 0, 5, 13, 2, CD);   // gaping dark mouth, goop dripping from the lip
         Part tongue = mouth.add("tongue").at(0, -1.5f, 0.3f);
         tongue.box(-1.5f, -0.5f, 0, 3, 1, 6).color(0xd0607a).flat();
         for (int i = 0; i < 4; i++) {                                                                     // drips down the flanks
             Part d = blob.add("drip" + i).at(-6 + i * 4, 10, i % 2 == 0 ? 7.6f : -7.6f);
             d.box(-0.7f, -3 - i % 2 * 2, -0.5f, 1, 3 + i % 2 * 2, 1).color(CL).flat();
         }
+        Part hat = top.add("hat").at(3, 6, 0);                                                              // tiny black bowler hat
+        hat.rot(0, 0, -12);
+        hat.box(-2.5f, 0, -2.5f, 5, 1, 5).color(0x16161c).bevel(0.2f);
+        hat.box(-1.5f, 1, -1.5f, 3, 2, 3).color(0x1c1c24).bevel(0.2f);
         m.proc((r, x) -> r.show("tongue", "goop_spray".equals(x.move)));
         m.clip("idle", 50).loop()
             .scl("blob", 0, 1, 1, 1).scl("blob", 25, 1.04f, 0.94f, 1.04f).scl("blob", 50, 1, 1, 1)
