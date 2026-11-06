@@ -15,55 +15,51 @@ import net.minecraft.sounds.SoundEvents;
 public final class TimeEater {
     private TimeEater() {}
 
-    static final int TEAL = 0xa03aa0, TEAL_L = 0xd060c8, TEAL_D = 0x6a1a6c, BRASS = 0xc29a3a, BRASS_D = 0x8a6a22, CREAM = 0xe8dfc0, TICK = 0x3a2a14, RUST = 0x8a5a2a, GLOW = 0xffc040;
+    static final int GREEN = 0xa8dcc0, GREEN_D = 0x5ea088, TEAL = 0xa03aa0, TEAL_L = 0xd060c8, TEAL_D = 0x6a1a6c, BRASS = 0xc29a3a, BRASS_D = 0x8a6a22, CREAM = 0xe8dfc0, TICK = 0x3a2a14, RUST = 0x8a5a2a, GLOW = 0xffc040;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("time_eater");
-        m.scale(1.7f);
+        m.scale(1.5f);
+        // StS1 Time Eater: a hulking hunched purple robe, a pale green skull-like head with a trailing tentacle, and a big pocket watch dangling from one hand
         for (int s = -1; s <= 1; s += 2) {
-            Part leg = m.add(s < 0 ? "legR" : "legL").at(s * 4.5f, 11, 0);
-            leg.box(-2.5f, -11, -2.5f, 5, 11, 5).color(TEAL).grad(TEAL_L, TEAL_D).bevel(0.2f);
-            leg.box(-3, -11, -3.5f, 6, 3, 7).color(BRASS).bevel(0.25f).noise(0.05f);
+            Part leg = m.add(s < 0 ? "legR" : "legL").at(s * 5, 5, 0);
+            leg.box(-2.5f, -5, -2.5f, 5, 5, 8).color(GREEN).grad(GREEN, GREEN_D).bevel(0.2f);          // pale feet peeking from the hem
         }
-        Part body = m.add("body").at(0, 11, 0);
-        body.cbox(0, 14, 5, 9).color(TEAL_D).bevel(0.2f);
-        body.cbox(-1, 16, 3, 10).color(BRASS_D).flat();                                        // belt
-        Part torso = body.add("torso").at(0, 5, 0);
-        torso.cbox(0, 16, 14, 10).color(TEAL).grad(TEAL_L, TEAL_D).bevel(0.25f).noise(0.06f);
-        torso.cbox(9, 18, 4, 11).color(TEAL_D).bevel(0.3f);                                    // yoke
-        torso.box(-2, 3, 5.1f, 4, 8, 1).color(BRASS).flat();                                    // chest plate
-        torso.box(-3, 6, 5.1f, 6, 2, 1).color(BRASS_D).flat();
-        torso.box(-1, 11, 5.1f, 2, 2, 1).color(0x120a04).glow(Face.FRONT, 0, 0, 2, 2, GLOW);
-        Part head = torso.add("head").at(0, 15, 0);
-        // the clock face (octagon from three overlapping slabs), centred on the pivot
-        head.box(-9, -6, -3, 18, 12, 6).color(BRASS).bevel(0.3f).noise(0.05f);
-        head.box(-6, -9, -3, 12, 18, 6).color(BRASS).bevel(0.3f).noise(0.05f);
-        head.box(-8, -8, -3, 16, 16, 5).color(BRASS_D).bevel(0.3f);
-        head.box(-7, -7, 2.2f, 14, 14, 1).color(CREAM).flat().noise(0.04f)
-            .paint(Face.FRONT, 6, 0, 2, 2, TICK).paint(Face.FRONT, 6, 12, 2, 2, TICK).paint(Face.FRONT, 0, 6, 2, 2, TICK).paint(Face.FRONT, 12, 6, 2, 2, TICK)
-            .paint(Face.FRONT, 2, 2, 1, 1, TICK).paint(Face.FRONT, 11, 2, 1, 1, TICK).paint(Face.FRONT, 2, 11, 1, 1, TICK).paint(Face.FRONT, 11, 11, 1, 1, TICK);
-        head.box(-1, -1, 3.2f, 2, 2, 1).color(GLOW).flat();
-        Part hMin = head.add("hMin").at(0, 0, 3.4f);
-        hMin.box(-0.5f, -1, 0, 1, 7, 1).color(0x201408).flat();
-        Part hHr = head.add("hHr").at(0, 0, 3.1f);
-        hHr.box(-1, -1, 0, 2, 4, 1).color(0x201408).flat();
-        head.box(-3, 9, -1, 6, 2, 2).color(BRASS_D).bevel(0.2f);                               // crown bell
-        head.box(-1, 11, -1, 2, 2, 2).color(BRASS).flat();
-        // shoulder gears + arms
+        Part body = m.add("body").at(0, 5, 0);
+        body.box(-9, 0, -7, 18, 8, 14).color(TEAL).grad(TEAL_L, TEAL_D).bevel(0.4f).noise(0.1f);
+        for (int i = 0; i < 6; i++) body.box(-9 + i * 3.3f, -2, -7.5f + (i % 2) * 14, 3, 3, 1).color(TEAL_D).flat();     // ragged hem
+        Part torso = body.add("torso").at(0, 8, -1).rot(22, 0, 0);                                            // hunched forward
+        torso.box(-8, 0, -6, 16, 10, 12).color(TEAL).grad(TEAL_L, TEAL).bevel(0.4f).noise(0.1f);
+        torso.box(-7, 10, -5, 14, 7, 10).color(TEAL).grad(TEAL_L, TEAL).bevel(0.4f).noise(0.1f);
+        torso.box(-5, 17, -4, 10, 5, 8).color(TEAL_D).grad(TEAL, TEAL_D).bevel(0.4f);                         // high hooded shoulders
+        for (int i = 0; i < 4; i++) torso.box(-6 + i * 4, 3 + i * 2, 6.2f, 2, 5, 1).color(TEAL_D).flat();      // leaf patterns
+        Part head = torso.add("head").at(0, 17, 5).rot(30, 0, 0);
+        head.box(-3.5f, -3, 0, 7, 9, 8).color(GREEN).grad(0xd0f4e0, GREEN_D).bevel(0.3f).noise(0.06f);
+        head.box(-3, -1, 7.6f, 6, 3, 1).color(0x142018).flat().glow(Face.FRONT, 0, 0, 1, 1, 0x80ffd0).glow(Face.FRONT, 5, 0, 1, 1, 0x80ffd0);   // dark eye sockets
+        head.box(-1.5f, -5, 4, 3, 3, 4).color(GREEN_D).bevel(0.2f);                                           // jaw
+        Part tent = head.add("tent").at(-3, -2, 3);
+        tent.box(-1, -14, -1, 2, 14, 2).color(GREEN).grad(GREEN, GREEN_D).bevel(0.15f);                      // long tentacle
+        tent.box(-0.5f, -20, -0.5f, 1, 6, 1).color(GREEN_D).flat();
+        // pocket watch: hangs from the right hand; the proc spins its hands
         for (int s = -1; s <= 1; s += 2) {
-            Part gear = torso.add(s < 0 ? "gearR" : "gearL").at(s * 11, 12, 0);
-            gear.box(-5, -5, -1.5f, 10, 10, 3).color(BRASS).bevel(0.3f).noise(0.05f);
-            gear.box(-2, -7, -1.5f, 4, 14, 3).color(BRASS_D).bevel(0.2f);
-            gear.box(-7, -2, -1.5f, 14, 4, 3).color(BRASS_D).bevel(0.2f);
-            gear.box(-1.5f, -1.5f, 1.5f, 3, 3, 1).color(GLOW).flat();
-            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 10, 12, 0);
-            arm.box(-3, -8, -3, 6, 8, 6).color(TEAL).grad(TEAL_L, TEAL_D).bevel(0.2f);
+            Part gear = torso.add(s < 0 ? "gearR" : "gearL").at(s * 8.5f, 14, 2);
+            gear.box(-1.5f, -1.5f, -0.5f, 3, 3, 1).color(BRASS).bevel(0.2f);
+            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 8, 14, 3);
+            arm.box(-2, -8, -2, 4, 8, 4).color(s < 0 ? GREEN : TEAL).grad(s < 0 ? GREEN : TEAL_L, s < 0 ? GREEN_D : TEAL_D).bevel(0.2f);
             Part fore = arm.add(s < 0 ? "foreR" : "foreL").at(0, -8, 0);
-            fore.box(-3.5f, -8, -3.5f, 7, 8, 7).color(TEAL_D).bevel(0.2f);
-            fore.box(-4, -9, -4, 8, 3, 8).color(BRASS).bevel(0.25f).noise(0.05f);
-            Part fist = fore.add(s < 0 ? "fistR" : "fistL").at(0, -8, 0);
-            fist.box(-3.5f, -6, -3.5f, 7, 6, 7).color(BRASS).bevel(0.3f).noise(0.06f);
-            fist.box(-3.5f, -3, 3.5f, 7, 1, 1).color(BRASS_D).flat();
+            fore.box(-1.5f, -9, -1.5f, 3, 9, 3).color(s < 0 ? GREEN : TEAL_D).bevel(0.2f);
+            Part fist = fore.add(s < 0 ? "fistR" : "fistL").at(0, -9, 0);
+            fist.box(-1.5f, -3, -1.5f, 3, 3, 3).color(GREEN_D).bevel(0.2f);
+            if (s < 0) {                                                                                         // the watch on its chain
+                fist.box(-0.5f, -9, -0.5f, 1, 6, 1).color(0xc8c8d0).flat();
+                Part watch = fist.add("watch").at(0, -9, 0);
+                watch.box(-5, -10, -1.5f, 10, 10, 3).color(0xe0e8e0).bevel(0.5f).noise(0.04f);
+                watch.box(-5.5f, -10.5f, -2, 11, 11, 1).color(0xa8c8c0).bevel(0.4f);
+                watch.box(-4, -9, 1.4f, 8, 8, 1).color(CREAM).flat().paint(Face.FRONT, 3, 0, 2, 1, TICK).paint(Face.FRONT, 3, 7, 2, 1, TICK).paint(Face.FRONT, 0, 3, 1, 2, TICK).paint(Face.FRONT, 7, 3, 1, 2, TICK);
+                watch.box(-0.7f, 0, -0.5f, 2, 2, 1).color(0xc8c8d0).flat();
+                Part hMin = watch.add("hMin").at(0, -5, 2.6f); hMin.box(-0.5f, -0.5f, 0, 1, 4, 1).color(0x201408).flat();
+                Part hHr = watch.add("hHr").at(0, -5, 2.4f); hHr.box(-0.8f, -0.5f, 0, 2, 3, 1).color(0x201408).flat();
+            }
         }
         m.look("head", 40, 25);
         m.walkBiped("legR", "legL", "armR", "armL", 30f, 20f);
