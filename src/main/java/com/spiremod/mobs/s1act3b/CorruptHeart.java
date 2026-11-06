@@ -15,21 +15,13 @@ import net.minecraft.world.entity.LivingEntity;
 public final class CorruptHeart {
     private CorruptHeart() {}
 
-    static final int FLESH = 0x8c1a2a, FLESH_L = 0xc4384a, FLESH_D = 0x4a0c18, VEIN = 0x2a1030, GLOW = 0xff5a3a, CORE = 0xffd070, RIB = 0x1c1620, RIB_L = 0x3a3040;
+    static final int FLESH = 0x6aa8b4, FLESH_L = 0xa6dce2, FLESH_D = 0x3a6a7c, VEIN = 0xe8607a, GLOW = 0xff7090, CORE = 0xffc0d0, RIB = 0x3a2a58, RIB_L = 0x5a4a88;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("corrupt_heart");
         m.scale(1.5f);
-        // rib cage "cradle": curved black spikes rising around the base
-        Part cage = m.add("cage").at(0, 0, 0);
-        cage.cbox(0, 22, 3, 22).color(RIB).grad(RIB_L, RIB).bevel(0.3f).noise(0.08f);
-        for (int i = 0; i < 8; i++) {
-            double a = Math.toRadians(i * 45 + 22);
-            Part rib = cage.add("rib" + i).at((float) (Math.cos(a) * 12), 3, (float) (Math.sin(a) * 12)).rot(-18, (float) (-i * 45 - 22 + 90), 0);
-            rib.box(-1.5f, 0, -1.5f, 3, 14, 3).color(RIB).grad(RIB_L, RIB).bevel(0.2f);
-            Part tip = rib.add("ribt" + i).at(0, 14, 0).rot(-30, 0, 0);
-            tip.box(-1, 0, -1, 2, 10, 2).color(RIB_L).bevel(0.15f);
-        }
+        Part cage = m.add("cage").at(0, 0, 0);                                                          // pivot only (clips spin it)
+        cage.cbox(0, 1, 1, 1).color(FLESH_D).flat();
         Part heart = m.add("heart").at(0, 22, 0);
         // two ventricle lobes + atria
         heart.box(-12, -8, -10, 14, 18, 20).color(FLESH).grad(FLESH_L, FLESH_D).bevel(0.5f).noise(0.1f);
@@ -40,7 +32,7 @@ public final class CorruptHeart {
         heart.box(-13, 8, -7, 10, 8, 14).color(FLESH_L).grad(FLESH_L, FLESH).bevel(0.4f).noise(0.1f);   // atria
         heart.box(3, 8, -7, 10, 8, 14).color(FLESH_L).grad(FLESH_L, FLESH).bevel(0.4f).noise(0.1f);
         // veins painted over the front, glowing wound-core under a chest crack
-        heart.box(-6, -4, 9.6f, 12, 14, 1).color(0x2a0810).bevel(0.2f)
+        heart.box(-6, -4, 9.6f, 12, 14, 1).color(0x8ac0c8).bevel(0.2f)
             .glow(Face.FRONT, 5, 1, 2, 12, GLOW).glow(Face.FRONT, 3, 4, 2, 1, GLOW).glow(Face.FRONT, 7, 7, 2, 1, GLOW).glow(Face.FRONT, 5, 11, 2, 2, CORE);
         heart.box(-11, 4, 10.1f, 1, 8, 1).color(VEIN).flat();
         heart.box(10, 2, 10.1f, 1, 10, 1).color(VEIN).flat();
@@ -48,16 +40,16 @@ public final class CorruptHeart {
         // aortas: two thick vessels arcing up and out
         for (int s = -1; s <= 1; s += 2) {
             Part ao = heart.add(s < 0 ? "aoR" : "aoL").at(s * 5, 14, 0).rot(0, 0, -s * 14);
-            ao.cbox(0, 6, 10, 6).color(FLESH_L).grad(FLESH_L, FLESH_D).bevel(0.3f).noise(0.08f);
+            ao.cbox(0, 6, 10, 6).color(0x5a82b8).grad(0x7aa2d0, 0x3a5a90).bevel(0.3f).noise(0.08f);
             Part ao2 = ao.add(s < 0 ? "aoR2" : "aoL2").at(0, 10, 0).rot(0, 0, -s * 30);
-            ao2.cbox(0, 5, 10, 5).color(FLESH).grad(FLESH_L, FLESH_D).bevel(0.3f);
-            ao2.cbox(10, 7, 2, 7).color(VEIN).flat();
+            ao2.cbox(0, 5, 10, 5).color(0x4a6aa0).grad(0x7aa2d0, 0x3a4a80).bevel(0.3f);
+            ao2.cbox(10, 7, 2, 7).color(RIB).flat();
         }
         // spiked horns of corruption on the shoulders of the muscle
         for (int s = -1; s <= 1; s += 2) for (int k = 0; k < 2; k++) {
             Part sp = heart.add((s < 0 ? "spR" : "spL") + k).at(s * (11 + k), -2 + k * 9, -3 + k * 4).rot(0, 0, -s * (55 + k * 10));
-            sp.box(-1.5f, 0, -1.5f, 3, 9, 3).color(RIB).bevel(0.2f);
-            sp.box(-0.5f, 9, -0.5f, 1, 4, 1).color(RIB_L).flat();
+            sp.box(-1.5f, 0, -1.5f, 3, 6, 3).color(RIB).bevel(0.3f);
+            sp.box(-1, 6, -1, 2, 2, 2).color(RIB_L).flat();
         }
         m.proc((rig, c) -> {
             float bpm = 0.28f + c.hpFrac * 0f + (c.phase > 0 ? 0.1f : 0f);
