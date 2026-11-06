@@ -11,27 +11,35 @@ import net.minecraft.sounds.SoundEvents;
  */
 public final class Transient {
     private Transient() {}
-    static final int SHADE = 0x2a2540, SHADE_D = 0x120f20, SHADE_L = 0x5a5280, EYE = 0xc8f0ff;
+    static final int SHADE = 0x1e1e40, SHADE_D = 0x0c0c1e, SHADE_L = 0x40407a, EYE = 0xc8f0ff;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("transient");
-        Part body = m.add("body").at(0, 14, 0);
+        // StS1 Transient: a round navy body with a glowing yellow star, four long spindly limbs (arms raised, legs splayed) and a small hanging tail
+        Part body = m.add("body").at(0, 19, 0);
         Part torso = body.add("torso").at(0, 0, 0);
-        torso.box(-5, 0, -3, 10, 12, 6).color(SHADE).grad(SHADE_L, SHADE_D).noise(0.12f).bevel(0.15f);
-        torso.box(-4, -10, -2.5f, 8, 10, 5).color(SHADE_D).grad(SHADE, SHADE_D);
-        torso.box(-3, -16, -2, 6, 6, 4).color(SHADE_D).grad(SHADE_D, 0x08060f);               // tattered tail
-        torso.box(-1, -22, -1, 2, 6, 2).color(0x08060f);
-        torso.box(-0.5f, 4, 3, 1, 5, 1).color(SHADE_L).flat().glow(Face.FRONT, 0, 0, 1, 5, 0x6a8aff);
-        Part head = torso.add("head").at(0, 12, 0);
-        head.box(-4, 0, -4, 8, 8, 8).color(SHADE).grad(SHADE_L, SHADE).bevel(0.2f);
-        head.box(-4.5f, 6, -4.5f, 9, 3, 9).color(SHADE_D).inflate(0.1f);
-        head.box(-3, 1.5f, 4, 6, 3, 1).color(0x08060f).flat().glow(Face.FRONT, 0, 0, 2, 3, EYE).glow(Face.FRONT, 4, 0, 2, 3, EYE);
+        int[][] lay = {{8, 2}, {12, 2}, {14, 3}, {14, 3}, {12, 2}, {8, 2}};     // rounded blob: width, height
+        int y = -7;
+        for (int[] l : lay) { torso.box(-l[0] / 2f, y, -l[0] / 2f + 0.5f, l[0], l[1], l[0] - 1).color(SHADE).grad(SHADE_L, SHADE_D).bevel(0.3f).noise(0.12f); y += l[1]; }
+        torso.box(-1, -11, -1.5f, 2, 4, 3).color(SHADE_D).bevel(0.2f);                      // dangling belly tail
+        torso.box(-1, -14, -1, 2, 3, 2).color(SHADE_D).flat();
+        torso.box(-0.5f, 1, 7.3f, 1, 5, 1).color(0xffd830).flat().glow(Face.FRONT, 0, 0, 1, 5, 0xffd830);       // slit above the star
+        torso.box(-0.5f, -6, 7.3f, 1, 4, 1).color(0xffd830).flat().glow(Face.FRONT, 0, 0, 1, 4, 0xffd830);      // slit below
+        torso.box(-0.75f, -3.5f, 7.4f, 2, 5, 1).color(0xffe870).flat().glow(Face.FRONT, 0, 0, 2, 5, 0xffe870);   // four-point star
+        torso.box(-2.5f, -1.5f, 7.4f, 5, 2, 1).color(0xffe870).flat().glow(Face.FRONT, 0, 0, 5, 2, 0xffe870);
+        Part head = torso.add("head").at(0, 7, 0);
+        head.box(-1, 0, -1, 2, 1, 2).color(SHADE_D).flat();                                   // (no real head: look-target only)
         for (int s = -1; s <= 1; s += 2) {
-            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 6.5f, 11, 0);
-            arm.box(-1.5f, -10, -1.5f, 3, 10, 3).color(SHADE).noise(0.1f);
-            Part claw = arm.add(s < 0 ? "clawR" : "clawL").at(0, -10, 0);
-            claw.box(-1.5f, -6, -1.5f, 3, 6, 3).color(SHADE_D);
-            for (int f = -1; f <= 1; f++) claw.box(f - 0.5f, -10, -0.5f, 1, 4, 1).color(0xcfd8ff).flat();
+            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 6, 2, 0).rot(0, 0, s * 125);
+            arm.box(-1, -9, -1, 2, 9, 2).color(SHADE).grad(SHADE_L, SHADE_D).bevel(0.15f);
+            Part claw = arm.add(s < 0 ? "clawR" : "clawL").at(0, -9, 0).rot(0, 0, s * -130);
+            claw.box(-1, -11, -1, 2, 11, 2).color(SHADE).bevel(0.15f);
+            for (int f = -1; f <= 1; f++) claw.box(f * 1.2f - 0.5f, -15 + Math.abs(f), -0.5f, 1, 4, 1).color(SHADE_D).flat();   // curled fingers
+            Part leg = torso.add(s < 0 ? "legR" : "legL").at(s * 4, -5, 0).rot(0, 0, s * 52);
+            leg.box(-1, -9, -1, 2, 9, 2).color(SHADE).grad(SHADE_L, SHADE_D).bevel(0.15f);
+            Part low = leg.add(s < 0 ? "lowR" : "lowL").at(0, -9, 0).rot(0, 0, s * -78);
+            low.box(-1, -12, -1, 2, 12, 2).color(SHADE).bevel(0.15f);
+            for (int f = -1; f <= 1; f++) low.box(f * 1.3f - 0.5f, -14, 0.5f + (f == 0 ? 1 : 0), 1, 2, 3).color(SHADE_D).flat();   // toes
         }
         m.bob(2f, 0.1f);
         m.look("head", 40, 25);
@@ -56,7 +64,7 @@ public final class Transient {
 
     public static MobDef def() {
         return MobDef.of("transient", "Transient", "トランジェント")
-            .game(1, 3).size(0.8f, 2.0f).hp(999).speed(0.24f).style(Style.GHOST).egg(0x2a2540, 0xc8f0ff)
+            .game(1, 3).size(1.2f, 2.0f).hp(999).speed(0.24f).style(Style.GHOST).egg(0x2a2540, 0xc8f0ff)
             .model(Transient::model).flying()
             .spawn(2, 1, 1, MobDef.Habitat.ANY)
             .pattern(s -> "attack")

@@ -14,53 +14,49 @@ import net.minecraft.sounds.SoundEvents;
 public final class AwakenedOne {
     private AwakenedOne() {}
 
-    static final int ROBE = 0x2a8ad8, ROBE_L = 0x60b8f4, ROBE_D = 0x1a5a98, TRIM = 0xe8d070, SKIN = 0xb9c6d8, SKIN_D = 0x8798b0,
-        EYE = 0xff2a2a, HORN = 0xe8e0c8, WING = 0x2a1a46, WING_L = 0x5b2f8f, GLOW = 0x9be86a;
+    static final int ROBE = 0x2a8ad8, ROBE_L = 0x60b8f4, ROBE_D = 0x1a5a98, TRIM = 0xe8d070, SKIN = 0xb8d0e0, SKIN_D = 0x7898b0,
+        EYE = 0xff2a2a, BLUE = 0x1f9ad8, BLUE_L = 0x58d0f4, BLUE_D = 0x0c5a98, HORN = 0xe8e0c8, WING = 0x2a1a46, WING_L = 0x5b2f8f, GLOW = 0x9be86a;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("awakened_one"); m.scale(1.2f);
-        Part skirt = m.add("skirt").at(0, 0, 0);
-        skirt.cbox(0, 14, 15, 9).color(ROBE).grad(ROBE_L, ROBE_D).bevel(0.2f).noise(0.08f);
-        skirt.cbox(0, 18, 5, 12).color(ROBE_D).grad(ROBE, ROBE_D).bevel(0.3f).noise(0.1f);
-        skirt.cbox(4, 18, 1, 12).inflate(0.2f).color(TRIM).flat();
-        skirt.box(-1, 5, 4.6f, 2, 10, 1).color(TRIM).flat();                                  // front panel
-        Part body = m.add("body").at(0, 14, 0);
+        // StS1 Awakened One: a huge blue raven, crouched low on pale bird legs with its long folded wings sweeping back into a tail
+        Part skirt = m.add("skirt").at(0, 12, -11);                                            // tail feathers (swishes in the skirt clips)
+        for (int i = -2; i <= 2; i++) {
+            Part tf = skirt.add("tail" + (i + 2)).at(0, 0, 0).rot(8, i * -9, 0);
+            tf.box(-2, -2, -14 - (2 - Math.abs(i)) * 3, 4, 3, 14 + (2 - Math.abs(i)) * 3).color(BLUE).grad(BLUE_L, BLUE_D).bevel(0.15f).noise(0.1f);
+        }
+        Part body = m.add("body").at(0, 15, 0);
         Part torso = body.add("torso").at(0, 0, 0);
-        torso.cbox(0, 12, 12, 7).color(ROBE).grad(ROBE_L, ROBE).bevel(0.2f).noise(0.06f);
-        torso.cbox(8, 14, 3, 9).color(ROBE_D).bevel(0.25f);                                   // mantle
-        torso.cbox(8.5f, 15, 1, 10).inflate(0.1f).color(TRIM).flat();
-        torso.box(-0.5f, 0, 3.6f, 1, 8, 1).color(TRIM).flat();
-        torso.box(-2, 4, 3.55f, 4, 4, 1).color(0x120a22).glow(Face.FRONT, 1, 1, 2, 2, GLOW);   // chest eye (glows)
-        Part head = torso.add("head").at(0, 12, 0);
-        head.cbox(0, 6, 6, 6).color(SKIN).grad(SKIN, SKIN_D).bevel(0.1f)
-            .glow(Face.FRONT, 0, 2, 2, 1, EYE).glow(Face.FRONT, 4, 2, 2, 1, EYE).paint(Face.FRONT, 2, 4, 2, 1, SKIN_D);
-        head.cbox(5, 8, 3, 8).color(ROBE_D).grad(ROBE, ROBE_D).bevel(0.2f);                       // hood cap
-        head.box(-4, -1, -4.5f, 8, 7, 3).color(ROBE_D).bevel(0.2f);                              // hood back
-        head.box(-4, 0, -3, 1, 6, 5).color(ROBE_D).bevel(0.1f); head.box(3, 0, -3, 1, 6, 5).color(ROBE_D).bevel(0.1f);
-                head.box(-4, 4.5f, -4, 8, 1, 1).color(TRIM).flat();
-        for (int s = -1; s <= 1; s += 2) {
-            Part horn = head.add(s < 0 ? "hornR" : "hornL").at(s * 3.5f, 6, 0).rot(0, 0, -s * 25);
-            horn.box(-1, 0, -1, 2, 5, 2).color(HORN).bevel(0.15f);
-            Part tip = horn.add(s < 0 ? "hornR2" : "hornL2").at(0, 5, 0).rot(0, 0, -s * 30);
-            tip.box(-0.5f, 0, -0.5f, 1, 4, 1).color(HORN).flat();
+        torso.box(-7, -6, -12, 14, 12, 22).color(BLUE).grad(BLUE_L, BLUE_D).bevel(0.4f).noise(0.12f);
+        torso.box(-6, -4, 9, 12, 9, 6).color(BLUE_L).grad(BLUE_L, BLUE).bevel(0.4f).noise(0.12f);          // fluffy chest
+        torso.box(-5, 5.5f, -10, 10, 2, 16).color(BLUE_L).bevel(0.3f).noise(0.1f);                          // back feather ridge
+        torso.box(-2, -2, 14.6f, 4, 4, 1).color(0x120a22).glow(Face.FRONT, 1, 1, 2, 2, GLOW);               // chest eye (glows)
+        Part head = torso.add("head").at(0, -1, 13).rot(40, 0, 0);                                           // head hangs low, beak pointing down
+        head.box(-4, -4, 0, 8, 9, 8).color(BLUE).grad(BLUE_L, BLUE_D).bevel(0.3f).noise(0.1f);
+        head.box(-2, -2, 8, 4, 4, 9).color(HORN).grad(HORN, 0xb8b090).bevel(0.15f);                         // long pale hooked beak
+        head.box(-1.5f, -4, 14, 3, 2, 4).color(HORN).bevel(0.15f);
+        head.box(-4.3f, 1, 4, 1, 2, 2).color(0xffe040).flat().glow(Face.LEFT, 0, 0, 2, 2, 0xffe040);        // yellow eyes
+        head.box(3.3f, 1, 4, 1, 2, 2).color(0xffe040).flat().glow(Face.RIGHT, 0, 0, 2, 2, 0xffe040);
+        for (int s = -1; s <= 1; s += 2) {                                                                   // head crest feathers
+            Part horn = head.add(s < 0 ? "hornR" : "hornL").at(s * 2, 5, 1).rot(-30, 0, -s * 20);
+            horn.box(-0.5f, 0, -3, 1, 2, 4).color(BLUE_L).bevel(0.1f);
         }
-        for (int s = -1; s <= 1; s += 2) {
-            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 8, 10, 0);
-            arm.box(-2, -7, -2, 4, 7, 4).color(ROBE).grad(ROBE_L, ROBE_D).bevel(0.15f);
-            arm.box(-2.3f, -7, -2.3f, 5, 1, 5).color(TRIM).flat();
-            Part fore = arm.add(s < 0 ? "foreR" : "foreL").at(0, -7, 0);
-            fore.box(-1.5f, -6, -1.5f, 3, 6, 3).color(ROBE_D).bevel(0.1f);
-            Part hand = fore.add(s < 0 ? "handR" : "handL").at(0, -6, 0);
-            hand.box(-1.5f, -2.5f, -1.5f, 3, 3, 3).color(SKIN).bevel(0.1f);
-            for (int f = -1; f <= 1; f++) hand.box(f * 1.1f - 0.4f, -6, -0.4f, 1, 4, 1).color(HORN).flat();   // claws
+        for (int s = -1; s <= 1; s += 2) {                                                                   // thin pale bird legs, knees bent
+            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 4.5f, -4, 2).rot(-30, 0, 0);
+            arm.box(-1.5f, -8, -1.5f, 3, 8, 3).color(BLUE_D).grad(BLUE, BLUE_D).bevel(0.2f);               // feathery thigh
+            Part fore = arm.add(s < 0 ? "foreR" : "foreL").at(0, -8, 0).rot(50, 0, 0);
+            fore.box(-1, -8, -1, 2, 8, 2).color(SKIN).grad(SKIN, SKIN_D).bevel(0.1f);
+            Part hand = fore.add(s < 0 ? "handR" : "handL").at(0, -8, 0).rot(-40, 0, 0);
+            hand.box(-1, -1.5f, -1, 2, 2, 5).color(SKIN_D).bevel(0.1f);
+            for (int f = -1; f <= 1; f++) hand.box(f * 1.4f - 0.5f, -1.5f, 3, 1, 1, 5).color(HORN).flat();   // three long talons
         }
-        // phase-2 wings: a ragged fan of dark feathers
-        Part wings = torso.add("wings").at(0, 8, -3.5f);
+        // wings: folded back along the body at rest; phase 2 the proc fans them out
+        Part wings = torso.add("wings").at(0, 5, -1);
         for (int s = -1; s <= 1; s += 2) {
-            Part w = wings.add(s < 0 ? "wingR" : "wingL").at(s * 3, 0, 0).rot(0, s * -20, s * -25);
+            Part w = wings.add(s < 0 ? "wingR" : "wingL").at(s * 7, 0, 0).rot(0, s * 10, s * 6);
             for (int i = 0; i < 4; i++) {
-                Part f = w.add((s < 0 ? "wR" : "wL") + i).at(0, 0, 0).rot(0, 0, s * (8 + 14 * i));
-                f.box(s < 0 ? -22 + i * 2 : 1, -1.5f, 0, 21 - i * 2, 3, 1).color(i % 2 == 0 ? WING : WING_L).grad(WING_L, WING).bevel(0.15f);
+                Part f = w.add((s < 0 ? "wR" : "wL") + i).at(0, -i * 1.5f, 0).rot(0, 0, s * (3 + 5 * i));
+                f.box(s < 0 ? -2 : -1, -1, -22 + i * 2, 3, 2, 22 - i * 2).color(i % 2 == 0 ? BLUE_D : BLUE).grad(BLUE_L, BLUE_D).bevel(0.15f);
             }
         }
         m.look("head", 50, 25);
@@ -139,7 +135,7 @@ public final class AwakenedOne {
 
     public static MobDef def() {
         return MobDef.of("awakened_one", "Awakened One", "覚醒せし者")
-            .game(1, 3).size(1.4f, 3.0f).hp(300).speed(0.24f).kbResist(0.9f).style(Style.MAGIC).egg(0x35395f, 0xff2a2a)
+            .game(1, 3).size(1.5f, 1.8f).hp(300).speed(0.24f).kbResist(0.9f).style(Style.MAGIC).egg(0x35395f, 0xff2a2a)
             .model(AwakenedOne::model).boss()
             .onSpawn(s -> {
                 if (!s.flags.contains("duo")) { s.flags.add("duo"); Fx.summon(s, "awakened_cultist", -4, -1); Fx.summon(s, "awakened_cultist", 4, -1); }
