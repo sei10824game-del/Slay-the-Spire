@@ -23,6 +23,7 @@ public final class AllMobs {
         com.spiremod.mobs.s2hive2.Group.collect(out);
         com.spiremod.mobs.s2glory1.Group.collect(out);
         com.spiremod.mobs.s2glory2.Group.collect(out);
+        com.spiremod.mobs.heroes.Group.collect(out);
         // groups are added here
     }
 }

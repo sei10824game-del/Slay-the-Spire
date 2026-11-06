@@ -9,7 +9,7 @@ Mod: Minecraft 1.20.1 Forge 47.3.0, id `spiremod`. Goal: ALL Slay the Spire 1 + 
 - Build works: `JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 ./gradlew --no-daemon compileJava` (needs JDK 17: `apt-get install openjdk-17-jdk-headless`; `tools/classpath.txt` via `./gradlew printCp`).
 
 ## Status
-174 creatures registered in all Group.java; `tools/validate.sh x --all` PASS; assets generated (src/main/resources/assets); `./gradlew build` produces build/libs/spiremod-1.0.0.jar.
+184 creatures (incl. 9 playable heroes in mobs/heroes: StS1 ironclad,silent,defect,watcher; StS2 s2_ironclad,s2_silent,s2_defect,s2_regent,s2_necrobinder + s2_osty minion) registered in all Group.java; `tools/validate.sh x --all` PASS; assets generated (src/main/resources/assets); `./gradlew build` produces build/libs/spiremod-1.0.0.jar.
 Dedicated-server smoke test DONE (runServer + RCON): all 174 summon OK, ~2 min ticking with all fighting, 0 exceptions; fixed SpireMob ctor (def null in registerGoals / flying nav) and Donu/Deca spawn recursion. NOT done: client-side (rendering/animation/boss bar visuals) test needs a GUI Minecraft. Most agent-written creatures only previewed on 1 attack clip; idle/walk/death mostly unreviewed; several from memory (no wiki check), e.g. s1act1b, s1act2a, s1act3b.
 StS2 lists on wiki Overgrowth/Underdocks/Hive/Glory are now covered (Hive extras in s2hive1/HiveB.java, Mawler in s2og1).
 Known approximations: no card/Strength/Dex/Artifact effects in engine; mapped to MC effects.
