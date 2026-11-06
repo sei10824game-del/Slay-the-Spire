@@ -11,7 +11,7 @@ import net.minecraft.sounds.SoundEvents;
  */
 public final class Collector {
     private Collector() {}
-    static final int ROBE = 0x1c7a78, ROBE_D = 0x0c4448, ROBE_L = 0x30a898, GOLD = 0xe0b040, GOLD_D = 0x9a7418, BONE = 0xe6dcc0, BONE_D = 0xa89c80, FIRE = 0xff9a20, EYE = 0x7fff9a, WOOD = 0x4a3220;
+    static final int ROBE = 0x1c7a78, ROBE_D = 0x0c4448, ROBE_L = 0x30a898, GOLD = 0xe0b040, GOLD_D = 0x9a7418, BONE = 0xe6dcc0, BONE_D = 0xa89c80, FIRE = 0xff9a20, EYE = 0x7fff9a, WOOD = 0x8a6a3a;
 
     public static ModelSpec model() {
         ModelSpec m = new ModelSpec("collector");
@@ -40,16 +40,15 @@ public final class Collector {
         cage.box(-2, -3, -4.5f, 4, 6, 4).color(FIRE).flat().glow(Face.BACK, 0, 0, 4, 6, FIRE).glow(Face.TOP, 0, 0, 4, 4, FIRE);
         // head: pale skull-mask with tall hood
         Part head = torso.add("head").at(0, 12, 0).rot(-6, 0, 0);
-        head.box(-3.5f, 0, -3.5f, 7, 7, 7).color(BONE).grad(BONE, BONE_D).bevel(0.15f)
-            .paint(Face.FRONT, 1, 2, 2, 2, 0x100818).paint(Face.FRONT, 4, 2, 2, 2, 0x100818)
-            .glow(Face.FRONT, 1, 2, 1, 1, EYE).glow(Face.FRONT, 5, 2, 1, 1, EYE)
-            .paint(Face.FRONT, 3, 4, 1, 2, 0x100818).paint(Face.FRONT, 1, 6, 5, 1, 0x100818)
-            .px(Face.FRONT, 2, 6, BONE).px(Face.FRONT, 4, 6, BONE);
-        head.box(-4.2f, 3, -3f, 8, 5, 7).color(ROBE_D).grad(ROBE_L, ROBE_D).bevel(0.15f);        // hood
-        head.box(-4, 7, -2, 8, 3, 5).color(ROBE).grad(ROBE_L, ROBE_D).bevel(0.15f);
-        head.box(-2.5f, 10, -1, 5, 3, 3).color(ROBE_D).bevel(0.15f);                              // hood peak
-        head.box(-3.8f, 0.5f, -5, 8, 7, 2).color(ROBE_D).bevel(0.1f);
-        head.box(-4, 6.5f, -3.6f, 8, 1, 1).color(GOLD).flat();                                    // brow band
+        head.box(-3.5f, 0, -3.5f, 7, 7, 7).color(0x06141a).grad(0x0c2a30, 0x040a0c).bevel(0.15f)               // hollow dark hood interior
+            .glow(Face.FRONT, 1, 3, 2, 1, EYE).glow(Face.FRONT, 4, 3, 2, 1, EYE).glow(Face.FRONT, 0, 6, 7, 1, 0x30c070);   // faint green glow rim
+        head.box(-5.5f, 0, -3.5f, 2, 9, 8).color(ROBE_D).grad(ROBE, ROBE_D).bevel(0.2f);                    // hood side walls
+        head.box(3.5f, 0, -3.5f, 2, 9, 8).color(ROBE_D).grad(ROBE, ROBE_D).bevel(0.2f);
+        head.box(-5, 7, -4, 10, 4, 8).color(ROBE).grad(ROBE_L, ROBE_D).bevel(0.25f);                       // hood top, big and slumped
+        head.box(-4, 11, -3, 8, 3, 6).color(ROBE).grad(ROBE_L, ROBE).bevel(0.25f);
+        head.box(-2.5f, 14, -2, 5, 3, 4).color(ROBE_D).bevel(0.25f);                                          // hood peak
+        head.box(-5, -2, -4.5f, 10, 5, 2).color(ROBE_D).grad(ROBE, ROBE_D).bevel(0.15f);                    // ragged back
+        head.box(-5, 8.5f, 3.2f, 10, 1, 1).color(0x30c070).flat().glow(Face.FRONT, 0, 0, 10, 1, 0x30c070);  // glowing inner edge of the hood
         // arms: right holds the staff with a fire orb, left clutches a bell-like censer
         for (int s = -1; s <= 1; s += 2) {
             Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 7, 10, 0);
@@ -58,14 +57,14 @@ public final class Collector {
             arm.box(-3.2f, -8.2f, -3.2f, 6, 1, 6).inflate(0.2f).color(GOLD).flat();
             Part fore = arm.add(s < 0 ? "foreR" : "foreL").at(0, -6, 0);
             Part hand = fore.add(s < 0 ? "handR" : "handL").at(0, -6, 0);
-            hand.box(-1.3f, -3, -1.3f, 3, 3, 3).color(BONE_D);
+            hand.box(-1.3f, -3, -1.3f, 3, 3, 3).color(0x8aa090).bevel(0.15f);
             if (s < 0) {
                 Part staff = hand.add("staff").at(0, -1.5f, 0).rot(-8, 0, 0);
                 staff.box(-0.7f, -8, -0.7f, 1, 30, 1).color(WOOD).noise(0.1f);
                 staff.box(-1.2f, 22, -1.2f, 2, 1, 2).color(GOLD).flat();
                 Part orb = staff.add("orb").at(0, 25, 0);
                 orb.box(-2, -2, -2, 4, 4, 4).color(FIRE).flat().glow(Face.FRONT, 0, 0, 4, 4, FIRE).glow(Face.TOP, 0, 0, 4, 4, 0xffe060).glow(Face.LEFT, 0, 0, 4, 4, FIRE).glow(Face.RIGHT, 0, 0, 4, 4, FIRE).glow(Face.BACK, 0, 0, 4, 4, FIRE);
-                orb.box(-3, -0.5f, -3, 6, 1, 6).color(GOLD).flat();
+                for (int tn = 0; tn < 4; tn++) { Part tine = staff.add("tine" + tn).at(0, 20, 0).rot(25, tn * 90, 0); tine.box(-0.5f, 0, -0.5f, 1, 7, 1).color(WOOD).noise(0.1f); }   // branchy staff head
                 orb.box(-0.5f, 2, -0.5f, 1, 3, 1).color(GOLD).flat();
             }
         }
