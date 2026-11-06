@@ -12,50 +12,56 @@ import net.minecraft.sounds.SoundEvents;
  */
 public final class Lagavulin {
     private Lagavulin() {}
-    static final int SKIN = 0xb8b4c4, SKIN_D = 0x6a6680, ARMOR = 0x5a6a86, ARMOR_D = 0x2e3a52, ARMOR_L = 0x8aa0c0, EYE = 0xffd830;
+    static final int SHELL = 0xe8e6cc, SHELL_L = 0xfaf8e6, SHELL_D = 0xa8a68c, HOLE = 0x24221e, LEG = 0xd8822a, LEG_D = 0x7a4a24;
 
     public static ModelSpec model() {
-        ModelSpec m = new ModelSpec("lagavulin").scale(1.45f);
-        for (int s = -1; s <= 1; s += 2) {
-            Part leg = m.add(s < 0 ? "legR" : "legL").at(s * 4, 7, 0);
-            leg.box(-2.5f, -7, -2.5f, 5, 7, 5).color(ARMOR).grad(ARMOR, ARMOR_D).bevel(0.14f).noise(0.08f);
-            leg.box(-3, -7, -3, 6, 2, 7).color(ARMOR_D).bevel(0.15f);
-            leg.box(-3, -2.5f, -3, 6, 2, 6).color(ARMOR_L).flat().inflate(0.3f).bevel(0.2f);                       // knee plate
+        ModelSpec m = new ModelSpec("lagavulin").scale(1.2f);
+        // StS1 Lagavulin: a tall pale egg-shaped shell with two columns of dark slits, a diamond eye and an X eye, on spiny orange insect legs
+        Part body = m.add("body").at(0, 11, 0);
+        Part torso = body.add("torso").at(0, 0, 0);
+        Part shell = torso.add("shell").at(0, 0, 0);
+        int[][] L = {{10, 3, 10}, {14, 3, 13}, {17, 4, 15}, {18, 4, 16}, {17, 4, 15}, {14, 3, 13}, {10, 3, 10}};
+        int y = 0;
+        for (int i = 0; i < L.length; i++) {
+            Part p = shell;
+            p.box(-L[i][0] / 2f, y, -L[i][2] / 2f, L[i][0], L[i][1], L[i][2]).color(SHELL).grad(i < 3 ? SHELL : SHELL_L, SHELL_D).bevel(0.18f).noise(0.07f)
+                .paint(Face.FRONT, i >= 2 && i <= 5 ? 3 : 0, 0, i >= 2 && i <= 5 ? 1 : 0, i >= 2 && i <= 5 ? 2 : 0, HOLE)
+                .paint(Face.FRONT, i >= 2 && i <= 5 ? L[i][0] - 4 : 0, 0, i >= 2 && i <= 5 ? 1 : 0, i >= 2 && i <= 5 ? 2 : 0, HOLE);
+            y += L[i][1];
         }
-        Part body = m.add("body").at(0, 7, 0);
-        body.box(-5, 0, -3.5f, 10, 4, 7).color(ARMOR_D).grad(ARMOR, ARMOR_D);
-        Part torso = body.add("torso").at(0, 4, 0).rot(15, 0, 0);                                                  // hunch at rest
-        torso.box(-6.5f, 0, -4, 13, 9, 8).color(SKIN).grad(SKIN, SKIN_D).bevel(0.12f).noise(0.08f)
-            .paint(Face.FRONT, 3, 1, 7, 6, 0x9c98ae);
-        torso.box(-7, 5, -4.5f, 14, 4, 9).color(ARMOR).grad(ARMOR_L, ARMOR).bevel(0.15f).noise(0.06f).inflate(0.2f);   // breastplate
-        torso.box(-0.5f, 1, -4.8f, 1, 8, 1).color(ARMOR_L).flat();
-        // big domed shell on the back with spikes
-        Part shell = torso.add("shell").at(0, 4, -4);
-        shell.box(-7, -1, -6, 14, 9, 6).color(ARMOR).grad(ARMOR_L, ARMOR_D).bevel(0.16f).noise(0.08f);
-        shell.box(-5, 8, -5.5f, 10, 2, 5).color(ARMOR).grad(ARMOR_L, ARMOR).bevel(0.16f);
-        for (int i = 0; i < 5; i++) { Part sp = shell.add("spike" + i).at(-5 + i * 2.5f, 7 + (i % 2), -6).rot(-50, 0, 0); sp.box(-0.5f, 0, -0.5f, 1, 3, 1).color(0xcfd6e6).flat(); }
-        Part head = torso.add("head").at(0, 9, 1.5f).rot(10, 0, 0);
-        head.box(-3.5f, 0, -3.5f, 7, 6, 7).color(SKIN).grad(SKIN, SKIN_D).bevel(0.15f).noise(0.07f);
-        head.box(-4, 3, -4, 8, 4, 8).color(ARMOR).grad(ARMOR_L, ARMOR_D).bevel(0.15f).inflate(0.1f);              // helm
-        head.box(-0.5f, 7, -3, 1, 2, 6).color(ARMOR_L).flat();                                                      // crest
-        Part eyes = head.add("eyes").at(0, 3, 3.6f);
-        eyes.box(-3, 0, -0.1f, 2, 1, 1).color(EYE).flat().glow(Face.FRONT, 0, 0, 2, 1, EYE);
-        eyes.box(1, 0, -0.1f, 2, 1, 1).color(EYE).flat().glow(Face.FRONT, 0, 0, 2, 1, EYE);
-        Part jaw = head.add("jaw").at(0, 1.5f, 0.5f);
-        jaw.box(-2.5f, -2, -3, 5, 2, 6).color(SKIN_D).bevel(0.12f).paint(Face.FRONT, 0, 1, 5, 1, 0x20181c);
-        jaw.box(-2, 0, 2.6f, 1, 1, 1).color(0xf0ead8); jaw.box(1, 0, 2.6f, 1, 1, 1).color(0xf0ead8);
+        // X eye (always dark) on the lower right of the face, painted as pixels
+        Part face = shell.add("face").at(0, 5, 7.6f);
+        face.box(2, 0, 0, 5, 5, 1).color(SHELL_D).flat().paint(Face.FRONT, 1, 1, 1, 1, HOLE).paint(Face.FRONT, 3, 1, 1, 1, HOLE).paint(Face.FRONT, 2, 2, 1, 1, HOLE)
+            .paint(Face.FRONT, 1, 3, 1, 1, HOLE).paint(Face.FRONT, 3, 3, 1, 1, HOLE);
+        Part eyes = shell.add("eyes").at(0, 5, 7.7f);                                  // diamond eye, lit only when awake
+        eyes.box(-6, 1, 0, 3, 3, 1).color(0x40ffa0).flat().glow(Face.FRONT, 0, 0, 3, 3, 0x40ffa0);
+        // the pointed crest on the upper right of the shell
+        Part head = torso.add("head").at(0, 22, 0);
+        head.box(3, 0, -2, 4, 4, 4).color(SHELL).grad(SHELL_L, SHELL).bevel(0.2f);
+        head.box(6, 1, -1, 3, 2, 2).color(SHELL_D).bevel(0.2f);
+        // lower lip of the shell (opens when it roars)
+        Part jaw = torso.add("jaw").at(0, 1, 5);
+        jaw.box(-5, -1, 0, 10, 2, 4).color(SHELL_D).bevel(0.15f);
+        // four walking legs + two forward grasping claws, all orange and spiny
         for (int s = -1; s <= 1; s += 2) {
-            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 8.5f, 8, 0);
-            arm.box(-3, -2, -3, 6, 4, 6).color(ARMOR).grad(ARMOR_L, ARMOR).bevel(0.14f);                            // pauldron
-            arm.box(-1.8f, -9, -1.8f, 4, 7, 4).color(SKIN).grad(SKIN, SKIN_D).bevel(0.1f);
-            arm.box(-2.3f, -6, -2.3f, 4, 3, 4).color(ARMOR_D).flat().inflate(0.4f);
-            Part hand = arm.add(s < 0 ? "handR" : "handL").at(0, -9, 0);
-            hand.box(-2.5f, -5, -2.5f, 5, 5, 5).color(SKIN).grad(SKIN, SKIN_D).bevel(0.12f);
-            hand.box(-2.5f, -5.5f, 2, 5, 1, 1).color(0xcfd6e6).flat();
+            for (int k = 0; k < 2; k++) {
+                Part leg = (k == 0 ? m.add(s < 0 ? "legR" : "legL") : body.add(s < 0 ? "legR2" : "legL2")).at(s * (7 + k), k == 0 ? 11 : -3, -2 - k * 4);
+                leg.rot(0, 0, s * -24 + (k == 1 ? s * -10 : 0));
+                leg.box(-1, -6, -1, 2, 6, 2).color(LEG).grad(LEG, LEG_D).bevel(0.12f);
+                Part low = leg.add("low" + (s < 0 ? "R" : "L") + k).at(0, -6, 0).rot(0, 0, s * 38);
+                low.box(-1, -7, -1, 2, 7, 2).color(LEG).grad(LEG, LEG_D).bevel(0.12f);
+                for (int c = 0; c < 3; c++) low.box(s < 0 ? -2 : 1, -6 + c * 2, -0.5f, 1, 1, 1).color(LEG_D);   // spines
+            }
+            Part arm = torso.add(s < 0 ? "armR" : "armL").at(s * 8, 7, 5);
+            arm.rot(-25, 0, s * -14);
+            arm.box(-1, -7, -1, 2, 7, 2).color(LEG).grad(LEG, LEG_D).bevel(0.12f);
+            Part claw = arm.add(s < 0 ? "handR" : "handL").at(0, -7, 0);
+            claw.box(-1, -6, -1, 2, 6, 2).color(LEG).grad(LEG, LEG_D).bevel(0.12f);
+            for (int c = 0; c < 4; c++) claw.box(s < 0 ? -2 : 1, -6 + c * 1.5f > 0 ? -6 : -6 + c, -0.5f, 1, 1, 1).color(LEG_D);
         }
+        m.proc((r, c) -> r.show("eyes", c.phase > 0));
         m.look("head", 40, 20);
         m.walkBiped("legR", "legL", "armR", "armL", 30f, 20f);
-        m.proc((r, c) -> r.show("eyes", c.phase > 0));
         // asleep: slumped forward over the knees, slow breathing
         Clip sl = m.clip("sleep", 60).loop();
         K.r(sl, "torso", 0, 40, 0, 0, 30, 43, 0, 0, 60, 40, 0, 0);
